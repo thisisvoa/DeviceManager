@@ -1,0 +1,155 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+</head>
+<body>
+
+<section class="content table-content">
+    <div class="gray-bg">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <h2>当前位置</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a>主页</a>
+                </li>
+                <li>
+                    <strong>电厂设备管理</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="ibox float-e-margins">
+
+            <div class="ibox-title">
+                <h5>电厂设备管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
+                            <button type="button" class="btn btn-outline btn-default" id="adduser">
+                                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="example">
+                            <table id="exampleTableFromData" data-mobile-responsive="true">
+                                <thead>
+                                <tr>
+                                    <th data-field="Tid">ID</th>
+                                    <th data-field="First">设备名称</th>
+                                    <th data-field="First">设备型号</th>
+                                    <th data-field="sex">地址</th>
+                                    <th data-field="Score">经度/纬度</th>
+                                    <th data-field="Score">创建时间</th>
+                                    <th data-field="Score">修改时间</th>
+                                    <th data-field="Score">描述</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-layer" id="add" style="display: none">
+        <form role="form" class="form-horizontal m-t">
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">设备名称：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"  />
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">设备型号：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">设备版本</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">描述：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+        <!-- 全局js -->
+        <!--jquery-->
+        <script src="/static/hadmin/js/jquery.min.js"></script>
+        <script src="/static/hadmin/js/bootstrap.min.js"></script>
+        <!-- 自定义js -->
+        <script src="/static/hadmin/js/content.js?v=1.0.0"></script>
+
+
+        <!-- Bootstrap table -->
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.2.0/locale/bootstrap-table-zh-CN.min.js"></script>
+        <!-- Peity -->
+        <script src="/static/hadmin/js/demo/bootstrap-table-demo.js"></script>
+        <script src="/static/hadmin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+        $("#adduser").click(function () {
+            $("#add").css('display','block');
+            layer.open({
+                type: 1,
+                shade: false,
+                title: "修改密码", //不显示标题
+                content: $('#add'),
+                move:false,
+                area: ['750px', '400px'],
+                btn:["确认","取消"],
+                yes: function(index, layero){
+                //按钮【按钮一】的回调
+
+                    $("#add").css('display','block');
+                },btn2: function(index, layero){
+
+                    $("#add").css('display','block');
+                //按钮【按钮二】的回调
+                },btn3: function(index, layero){
+                    $("#add").css('display','block');
+                //按钮【按钮三】的回调
+            }
+            ,cancel: function(){
+                //右上角关闭回调
+                    $("#add").css('display','block');
+            }
+
+            });
+        })
+    </script>
+
+
+    </div>
+
+</section>
+<div th:include="console/footer"></div>
+</body>
+
+</html>

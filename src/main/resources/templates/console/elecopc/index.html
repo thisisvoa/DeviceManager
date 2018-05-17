@@ -1,0 +1,192 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+</head>
+<body>
+
+<section class="content table-content">
+    <div class="gray-bg">
+    <div class="row wrapper border-bottom white-bg page-heading">
+        <div class="col-sm-12">
+            <h2>当前位置</h2>
+            <ol class="breadcrumb">
+                <li>
+                    <a>主页</a>
+                </li>
+                <li>
+                    <strong>电厂管理</strong>
+                </li>
+            </ol>
+        </div>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+
+        <div class="ibox float-e-margins">
+
+            <div class="ibox-title">
+                <h5>电厂管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
+                            <button type="button" class="btn btn-outline btn-default" id="adduser">
+                                <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+                            </button>
+                            <button type="button" class="btn btn-outline btn-default">
+                                <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="example">
+                            <table id="dataGrid"></table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-layer" id="add" style="display: none">
+        <form role="form" class="form-horizontal m-t">
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">电厂名称：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"  />
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">地址：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">OPC名称：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">协议：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control" value="TCP/IP"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">描述：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group draggable ui-draggable">
+                <label class="col-sm-3 control-label">备足：</label>
+                <div class="col-sm-7">
+                    <input type="text" class="form-control"/>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+        <!-- 全局js -->
+        <!--jquery-->
+        <script src="/static/hadmin/js/jquery.min.js"></script>
+        <script src="/static/hadmin/js/bootstrap.min.js"></script>
+        <!-- 自定义js -->
+        <script src="/static/hadmin/js/content.js?v=1.0.0"></script>
+
+
+        <!-- Bootstrap table -->
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.2.0/locale/bootstrap-table-zh-CN.min.js"></script>
+        <!-- Peity -->
+        <script src="/static/hadmin/js/demo/bootstrap-table-demo.js"></script>
+        <script src="/static/hadmin/js/plugins/layer/layer.min.js"></script>
+    <script type="text/javascript">
+
+        $table = $("#dataGrid");
+        $(function () {
+            initDataGrid();
+        });
+        function initDataGrid(){
+            $table.bootstrapTable({
+                height : tableModel.getHeight(),
+                idField : "uid",
+                columns : [[
+                    {title: "id", field: "编号" },
+                    {title: "电厂名称", field: "elecName"},
+                    {title: "description", field: "description"},
+                    {title: "创建时间", field: "createdAt", sortable: true},
+                    {title: "更新日期", field: "updatedAt", sortable: true},
+                    {title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter}
+                ]],
+                url : '/console/elec/list',
+                queryParams: function(params){
+                    return params;
+                },
+                responseHandler : function (res) {
+                    return {
+                        rows : res.result.pageInfo.list,
+                        total : res.result.pageInfo.total
+                    }
+                },
+                search : true,
+                searchOnEnterKey : true,
+                sortName : 'createdAt',
+                sortOrder : 'asc',
+                pagination : true,
+                sidePagination : 'server',
+                pageSize: 20,
+                pageList : [20, 40, 50, 100],
+                toolbar : "#toolbar",
+                showRefresh : true,
+                showToggle : true
+            });
+        }
+
+        $("#adduser").click(function () {
+            $("#add").css('display','block');
+            layer.open({
+                type: 1,
+                shade: false,
+                title: "修改电厂名称", //不显示标题
+                content: $('#add'),
+                move:false,
+                area: ['750px', '400px'],
+                btn:["确认","取消"],
+                yes: function(index, layero){
+                    //按钮【按钮一】的回调
+                    alert(1);
+                    $("#add").css('display','none');
+                    $("#add").hide();
+                },btn2: function(index, layero){
+
+                    $("#add").css('display','none');
+                    $("#add").hide();
+                    //按钮【按钮二】的回调
+                },btn3: function(index, layero){
+                    $("#add").css('display','none');
+                    $("#add").hide();
+                    //按钮【按钮三】的回调
+                }
+                ,cancel: function(){
+                    //右上角关闭回调
+                    $("#add").css('display','none');
+                    $("#add").hide();
+                }
+            });
+        })
+    </script>
+
+
+    </div>
+
+</section>
+<div th:include="console/footer"></div>
+</body>
+
+</html>

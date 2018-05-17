@@ -1,0 +1,4 @@
+.page-layer{ padding: 20px; display: none}
+.layui-layer-btn { text-align: center}
+.ibox-tools{ top: -5px}
+.clearfix:after{ clear: both; display: block; height: 0; content: ""; visibility: hidden}

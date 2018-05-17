@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <script src="https://cdn.bootcss.com/Chart.js/2.6.0/Chart.bundle.min.js"></script>
+    <script src="https://cdn.bootcss.com/Chart.js/2.6.0/Chart.min.js"></script>
+    <script src="https://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <!-- layer -->
+    <script src="/static/hadmin/js/plugins/layer/layer.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/static/css/mobliestyle.css" rel="stylesheet"/>
+    <script   th:inline="javascript">
+
+        function Control(v){
+            $.ajax({url:"/"+v+"/set",async:false});
+        }
+        function getPoll(){
+            var mac= [[${mac}]];
+            var data=$.ajax({url:"/console/device/"+mac+"/send2001.do",async:false});
+            var _objs = $.parseJSON(data.responseText);
+            if(jQuery.isEmptyObject(_objs)){
+                layer.msg("返回为空，请确认本地是否安装组态王程序！！！");
+                return;
+            }
+            if((_objs.status==0)){
+                layer.msg(_objs.msg);
+                return;
+            }
+            var __objs=_objs.result;
+            var objs=$.parseJSON(__objs.data);
+            if(null == objs)
+                return;
+            var html="";
+            html+='<div class="col-sm-6"><div class="divlabel">水位</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.Water+'</div><div class="divlabel" style="width:80px;">m</div></div>';
+            html+='<div class="col-sm-6"><div class="divlabel">有功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.ValidPower+'</div><div class="divlabel" style="width:80px;">KW</div></div>';
+            html+='<div class="col-sm-6"><div class="divlabel">无功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.IdlePower+'</div><div class="divlabel" style="width:80px;">KVAR</div></div>';
+            if(objs.hasOwnProperty('State1')){
+                html+='<div class="col-sm-6"><div class="divlabel">1#机组</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(objs.State1==false?'停机':'发电')+'</div></div>';
+            }
+            if(objs.hasOwnProperty('State2')){
+                html+='<div class="col-sm-6"><div class="divlabel">2#机组</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(objs.State2==false?'停机':'发电')+'</div></div>';
+            }
+            if(objs.hasOwnProperty('State3')){
+                html+='<label class="col-sm-6 control-label">3#机组 '+(objs.State3==false?'停机':'发电')+'</label>';
+            }
+            if(objs.hasOwnProperty('State4')){
+                html+='<label class="col-sm-6 control-label">4#机组 '+(objs.State4==false?'停机':'发电')+'</label>';
+            }
+            if(objs.hasOwnProperty('State5')){
+                html+='<label class="col-sm-6 control-label">5#机组 '+(objs.State5==false?'停机':'发电')+'</label>';
+            }
+            if(objs.hasOwnProperty('State6')){
+                html+='<label class="col-sm-6 control-label">6#机组 '+(objs.State6==false?'停机':'发电')+'</label>';
+            }
+            if(objs.hasOwnProperty('State7')){
+                html+='<label class="col-sm-6 control-label">7#机组 '+(objs.State7==false?'停机':'发电')+'</label>';
+            }
+            if(objs.hasOwnProperty('State8')){
+                html+='<label class="col-sm-6 control-label">8#机组 '+(objs.State8==false?'停机':'发电')+'</label>';
+            }
+            $("#Overview").html(html);
+            var config = {
+                type: 'bar',
+                data: {
+                    labels: ["1月", "2月", "3月", "4月", "5月", "6月","7月","8月","9月","10月","11月","12月"],
+                    datasets: [{
+                        label: "电度统计",
+                        fill: true,
+                        backgroundColor: "rgba(75,192,192,0.4)",
+                        borderColor: "rgba(75,192,192,1)",
+                        borderCapStyle: 'butt',
+                        borderDash: [],
+                        borderDashOffset: 0.0,
+                        borderJoinStyle: 'miter',
+                        pointBorderColor: "rgba(75,192,192,1)",
+                        pointBackgroundColor: "#fff",
+                        pointBorderWidth: 1,
+                        pointHoverRadius: 5,
+                        pointHoverBackgroundColor: "rgba(75,192,192,1)",
+                        pointHoverBorderColor: "rgba(220,220,220,1)",
+                        pointHoverBorderWidth: 2,
+                        pointRadius: 1,
+                        pointHitRadius: 10,
+                        data: objs.Powers
+                    }]
+                },
+                options: {
+                    title:{
+                        display:false,
+                        text: "电度统计",
+                        FontSize: 20
+                    }
+                }
+            };
+
+            var ctx = document.getElementById("Chart").getContext("2d");
+            new Chart(ctx, config)
+            //根据OPC变量的配置，查询是否有对应机组的数据，有拼接html
+            html="";
+            if(objs.hasOwnProperty('ValidPower1')){
+                html+='<hr/>';
+                html+='<h2 class="blue">1#机组</h2>';
+                html+='<div class="col-sm-6"><div class="divlabel">有功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.ValidPower1+'</div><div class="divlabel" style="width:80px;">KW</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">无功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.IdlePower1)=="undefined"?0:objs.IdlePower1)+'</div><div class="divlabel" style="width:80px;">KVAR</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电流</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Current1)=="undefined"?0:objs.Current1)+'</div><div class="divlabel" style="width:80px;">A</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电压</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Voltage1)=="undefined"?0:objs.Voltage1)+'</div><div class="divlabel" style="width:80px;">V</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">频率</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Freq1)=="undefined"?0:objs.Freq1)+'</div><div class="divlabel" style="width:80px;">HZ</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电度</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.PPower1)=="undefined"?0:objs.PPower1)+'</div><div class="divlabel" style="width:80px;">KWH</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">水位</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Water1)=="undefined"?0:objs.Water1)+'</div><div class="divlabel" style="width:80px;">m</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="border:1px solid #ffffff;border-radius:4px;background-color:#ffffff;">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="width:80px;">&nbsp;&nbsp;&nbsp;&nbsp;</div></div>';
+                html+='<hr/>';
+            }
+            if(objs.hasOwnProperty('ValidPower2')){
+                html+='<hr/>';
+                html+='<h2 class="blue">2#机组</h2>';
+                html+='<div class="col-sm-6"><div class="divlabel">有功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.ValidPower2+'</div><div class="divlabel" style="width:80px;">KW</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">无功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.IdlePower2)=="undefined"?0:objs.IdlePower2)+'</div><div class="divlabel" style="width:80px;">KVAR</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电流</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Current2)=="undefined"?0:objs.Current2)+'</div><div class="divlabel" style="width:80px;">A</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电压</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Voltage2)=="undefined"?0:objs.Voltage2)+'</div><div class="divlabel" style="width:80px;">V</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">频率</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Freq2)=="undefined"?0:objs.Freq2)+'</div><div class="divlabel" style="width:80px;">HZ</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电度</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.PPower2)=="undefined"?0:objs.PPower2)+'</div><div class="divlabel" style="width:80px;">KWH</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">水位</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Water2)=="undefined"?0:objs.Water2)+'</div><div class="divlabel" style="width:80px;">m</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="border:1px solid #ffffff;border-radius:4px;background-color:#ffffff;">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="width:80px;">&nbsp;&nbsp;&nbsp;&nbsp;</div></div>';
+                html+='<hr/>';
+            }
+            if(objs.hasOwnProperty('ValidPower3')){
+                html+='<hr/>';
+                html+='<h2 class="blue">3#机组</h2>';
+                html+='<div class="col-sm-6"><div class="divlabel">有功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.ValidPower3+'</div><div class="divlabel" style="width:80px;">KW</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">无功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.IdlePower3)=="undefined"?0:objs.IdlePower3)+'</div><div class="divlabel" style="width:80px;">KVAR</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电流</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Current3)=="undefined"?0:objs.Current3)+'</div><div class="divlabel" style="width:80px;">A</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电压</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Voltage3)=="undefined"?0:objs.Voltage3)+'</div><div class="divlabel" style="width:80px;">V</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">频率</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Freq3)=="undefined"?0:objs.Freq3)+'</div><div class="divlabel" style="width:80px;">HZ</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电度</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.PPower3)=="undefined"?0:objs.PPower3)+'</div><div class="divlabel" style="width:80px;">KWH</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">水位</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Water3)=="undefined"?0:objs.Water3)+'</div><div class="divlabel" style="width:80px;">m</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="border:1px solid #ffffff;border-radius:4px;background-color:#ffffff;">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="width:80px;">&nbsp;&nbsp;&nbsp;&nbsp;</div></div>';
+                html+='<hr/>';
+            }
+            if(objs.hasOwnProperty('ValidPower4')){
+                html+='<hr/>';
+                html+='<h2 class="blue">2#机组</h2>';
+                html+='<div class="col-sm-6"><div class="divlabel">有功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+objs.ValidPower4+'</div><div class="divlabel" style="width:80px;">KW</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">无功</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.IdlePower4)=="undefined"?0:objs.IdlePower4)+'</div><div class="divlabel" style="width:80px;">KVAR</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电流</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Current4)=="undefined"?0:objs.Current4)+'</div><div class="divlabel" style="width:80px;">A</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电压</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Voltage4)=="undefined"?0:objs.Voltage4)+'</div><div class="divlabel" style="width:80px;">V</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">频率</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Freq4)=="undefined"?0:objs.Freq4)+'</div><div class="divlabel" style="width:80px;">HZ</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">电度</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.PPower4)=="undefined"?0:objs.PPower4)+'</div><div class="divlabel" style="width:80px;">KWH</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">水位</div><div class="divlabel" style="border:1px solid #ccc;border-radius:4px;background-color:#1caaea;">'+(typeof(objs.Water4)=="undefined"?0:objs.Water4)+'</div><div class="divlabel" style="width:80px;">m</div></div>';
+                html+='<div class="col-sm-6"><div class="divlabel">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="border:1px solid #ffffff;border-radius:4px;background-color:#ffffff;">&nbsp;&nbsp;&nbsp;&nbsp;</div><div class="divlabel" style="width:80px;">&nbsp;&nbsp;&nbsp;&nbsp;</div></div>';
+                html+='<hr/>';
+            }
+
+            if(objs.hasOwnProperty('ValidPower5')){
+                html+='<hr/><h1 class="blue">5#机组</h1>';
+                html+='<label class="col-sm-6 control-label">有功 '+objs.ValidPower5+' KW</label>';
+                html+='<label class="col-sm-6 control-label">无功 '+(typeof(objs.IdlePower5)=="undefined"?0:objs.IdlePower5)+' KVAR</label>';
+                html+='<label class="col-sm-6 control-label">电流 '+(typeof(objs.Current5)=="undefined"?0:objs.Current5)+' A</label>';
+                html+='<label class="col-sm-6 control-label">电压 '+(typeof(objs.Voltage5)=="undefined"?0:objs.Voltage5)+' V</label>';
+                html+='<label class="col-sm-6 control-label">频率 '+(typeof(objs.Freq5)=="undefined"?0:objs.Freq5)+' HZ</label>';
+                html+='<label class="col-sm-6 control-label">前导瓦温 '+(typeof(objs.LeadingTemp5)=="undefined"?0:objs.LeadingTemp5)+' C</label>';
+                html+='<label class="col-sm-6 control-label">推力瓦温 '+(typeof(objs.ThrustTemp5)=="undefined"?0:objs.ThrustTemp5)+' C</label>';
+                html+='<label class="col-sm-6 control-label">后导瓦温 '+(typeof(objs.FallTemp5)=="undefined"?0:objs.FallTemp5)+' C</label>';
+                html+='<label class="col-sm-6 control-label">定子温度 '+(typeof(objs.StatorTemp5)=="undefined"?0:objs.StatorTemp5)+' C</label>';
+                html+='<label class="col-sm-6 control-label">水位 '+(typeof(objs.Water5)=="undefined"?0:objs.Water5)+' m</label>';
+                html+='<hr/>';
+            }
+            if(objs.hasOwnProperty('ValidPower6')){
+                html+='<hr/><h1 class="blue">6#机组</h1>';
+                html+='<label class="col-sm-6 control-label">有功 '+objs.ValidPower6+' KW</label>';
+                html+='<label class="col-sm-6 control-label">无功 '+(typeof(objs.IdlePower6)=="undefined"?0:objs.IdlePower6)+' KVAR</label>';
+                html+='<label class="col-sm-6 control-label">电流 '+(typeof(objs.Current6)=="undefined"?0:objs.Current6)+' A</label>';
+                html+='<label class="col-sm-6 control-label">电压 '+(typeof(objs.Voltage6)=="undefined"?0:objs.Voltage6)+' V</label>';
+                html+='<label class="col-sm-6 control-label">频率 '+(typeof(objs.Freq6)=="undefined"?0:objs.Freq6)+' HZ</label>';
+                html+='<label class="col-sm-6 control-label">前导瓦温 '+(typeof(objs.LeadingTemp6)=="undefined"?0:objs.LeadingTemp6)+' C</label>';
+                html+='<label class="col-sm-6 control-label">推力瓦温 '+(typeof(objs.ThrustTemp6)=="undefined"?0:objs.ThrustTemp6)+' C</label>';
+                html+='<label class="col-sm-6 control-label">后导瓦温 '+(typeof(objs.FallTemp6)=="undefined"?0:objs.FallTemp6)+' C</label>';
+                html+='<label class="col-sm-6 control-label">定子温度 '+(typeof(objs.StatorTemp6)=="undefined"?0:objs.StatorTemp6)+' C</label>';
+                html+='<label class="col-sm-6 control-label">水位 '+(typeof(objs.Water6)=="undefined"?0:objs.Water6)+' m</label>';
+                html+='<hr/>';
+            }
+            if(objs.hasOwnProperty('ValidPower7')){
+                html+='<hr/><h1 class="blue">7#机组</h1>';
+                html+='<label class="col-sm-6 control-label">有功 '+objs.ValidPower7+' KW</label>';
+                html+='<label class="col-sm-6 control-label">无功 '+(typeof(objs.IdlePower7)=="undefined"?0:objs.IdlePower7)+' KVAR</label>';
+                html+='<label class="col-sm-6 control-label">电流 '+(typeof(objs.Current7)=="undefined"?0:objs.Current7)+' A</label>';
+                html+='<label class="col-sm-6 control-label">电压 '+(typeof(objs.Voltage7)=="undefined"?0:objs.Voltage7)+' V</label>';
+                html+='<label class="col-sm-6 control-label">频率 '+(typeof(objs.Freq7)=="undefined"?0:objs.Freq7)+' HZ</label>';
+                html+='<label class="col-sm-6 control-label">前导瓦温 '+(typeof(objs.LeadingTemp7)=="undefined"?0:objs.LeadingTemp7)+' C</label>';
+                html+='<label class="col-sm-6 control-label">推力瓦温 '+(typeof(objs.ThrustTemp7)=="undefined"?0:objs.ThrustTemp7)+' C</label>';
+                html+='<label class="col-sm-6 control-label">后导瓦温 '+(typeof(objs.FallTemp7)=="undefined"?0:objs.FallTemp7)+' C</label>';
+                html+='<label class="col-sm-6 control-label">定子温度 '+(typeof(objs.StatorTemp7)=="undefined"?0:objs.StatorTemp7)+' C</label>';
+                html+='<label class="col-sm-6 control-label">水位 '+(typeof(objs.Water7)=="undefined"?0:objs.Water7)+' m</label>';
+                html+='<hr/>';
+            }
+            if(objs.hasOwnProperty('ValidPower8')){
+                html+='<hr/><h1 class="blue">8#机组</h1>';
+                html+='<label class="col-sm-6 control-label">有功 '+objs.ValidPower8+' KW</label>';
+                html+='<label class="col-sm-6 control-label">无功 '+(typeof(objs.IdlePower8)=="undefined"?0:objs.IdlePower8)+' KVAR</label>';
+                html+='<label class="col-sm-6 control-label">电流 '+(typeof(objs.Current8)=="undefined"?0:objs.Current8)+' A</label>';
+                html+='<label class="col-sm-6 control-label">电压 '+(typeof(objs.Voltage8)=="undefined"?0:objs.Voltage8)+' V</label>';
+                html+='<label class="col-sm-6 control-label">频率 '+(typeof(objs.Freq8)=="undefined"?0:objs.Freq8)+' HZ</label>';
+                html+='<label class="col-sm-6 control-label">前导瓦温 '+(typeof(objs.LeadingTemp8)=="undefined"?0:objs.LeadingTemp8)+' C</label>';
+                html+='<label class="col-sm-6 control-label">推力瓦温 '+(typeof(objs.ThrustTemp8)=="undefined"?0:objs.ThrustTemp8)+' C</label>';
+                html+='<label class="col-sm-6 control-label">后导瓦温 '+(typeof(objs.FallTemp8)=="undefined"?0:objs.FallTemp8)+' C</label>';
+                html+='<label class="col-sm-6 control-label">定子温度 '+(typeof(objs.StatorTemp8)=="undefined"?0:objs.StatorTemp8)+' C</label>';
+                html+='<label class="col-sm-6 control-label">水位 '+(typeof(objs.Water8)=="undefined"?0:objs.Water8)+' m</label>';
+                html+='<hr/>';
+            }
+            $("#Unit").html(html);
+        }
+        $(function () {
+            getPoll();
+            var TIMEOUT = 5000;
+            var refreshInterval = setInterval(function() {
+                getPoll();
+            }, TIMEOUT);
+        });
+
+    </script>
+</head>
+<body>
+<nav class="navbar navbar-default">
+    <div class="container">
+        <div class="navbar-header">
+            <h1 class="blue">发电机远程监控系统</h1>
+        </div>
+    </div>
+</nav>
+<div class="container">
+    <div class="row float-element">
+        <h1 class="blue">机组状态总览</h1>
+
+        <div id="Overview">
+            <label class="col-sm-6 control-label">有功1</label>
+            <label class="col-sm-6 control-label">有功2</label>
+        </div>
+        <canvas id="Chart" width="600" height="500"></canvas>
+        <br/>
+        <h1 class="blue">分机组监控</h1>
+        <br/>
+        <div id="Unit">
+            <hr/>
+            <h2 class="blue">1#机组</h2>
+            <label class="col-sm-6 control-label">有功1</label>
+            <label class="col-sm-6 control-label">有功2</label>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+
+</head>
+<!--jquery-->
+<script src="/static/hadmin/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/jquery.cityselect.js"></script>
+
+<body>
+<section class="content-header">
+</section>
+<section class="content table-content">
+    <div class="gray-bg">
+    <div class="row wrapper border-bottom white-bg page-heading">
+
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>水电站：（省：市：区、县查询）</h5>
+                </div>
+
+                <div id="city" class=" row">
+                    <div class=" col-sm-3">
+                    <select class="prov form-control m-b"></select>
+                    </div>
+                    <div class=" col-sm-3">
+                    <select class="city form-control m-b" disabled="disabled"></select>
+                    </div>
+                    <div class=" col-sm-3">
+                    <select class="dist form-control m-b" disabled="disabled"></select>
+                    </div>
+                    <div>
+                        <div class=" col-sm-3">
+                        <select class="input-sm form-control input-s-sm inline">
+                            <option value="0">请选择</option>
+                            <option value="1">XX水电站</option>
+                            <option value="2">XXX水电站</option>
+                            <option value="3">老虎水电站</option>
+                        </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <h5>水轮机分布</h5>
+                                <div class="ibox-tools">
+
+
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="table_basic.html#">
+                                        <i class="fa fa-wrench"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user">
+                                        <li><a href="table_basic.html#">选项1</a>
+                                        </li>
+                                        <li><a href="table_basic.html#">选项2</a>
+                                        </li>
+                                    </ul>
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+                                <div class="row">
+                                    <div class="col-sm-5 m-b-xs">
+                                        <select class="input-sm form-control input-s-sm inline">
+                                            <option value="0">请选择水轮机</option>
+                                            <option value="1">1号水轮机</option>
+                                            <option value="2">2号水轮机</option>
+                                            <option value="3">3号水轮机</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-3 pull-right">
+                                        <div class="input-group">
+                                            <input type="text" placeholder="请输入关键词" class="input-sm form-control"/> <span class="input-group-btn">
+                                        <button type="button" class="btn btn-sm btn-primary"> 搜索</button> </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-responsive">
+                                    <table  id="table1" class="table table-striped">
+                                        <thead>
+                                        <tr>
+
+                                            <th>事件内容</th>
+                                            <th>数据值</th>
+                                            <th>占比</th>
+                                            <th>事件内容</th>
+                                            <th>事件时间</th>
+                                            <th>操作</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr  >
+                                            <td>
+                                                上导轴瓦温度
+                                            </td>
+                                            <td>12</td>
+                                            <td><span class="line">5,3,9,6,1,9,7,3,5,2</span></td>
+                                            <td>发电机断路器024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>推力轴瓦温度
+                                            </td>
+                                            <td>33</td>
+                                            <td><span class="line">5,3,1,6,5,9,7,12,5,2</span></td>
+                                            <td>发电机断路器024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>水导油槽温度
+                                            </td>
+                                            <td>333</td>
+                                            <td><span class="line">5,3,9,6,5,9,7,3,11,2</span></td>
+                                            <td>灭磁开关分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>空冷器热风
+                                            </td>
+                                            <td>23</td>
+                                            <td><span class="line">5,3,9,6,5,9,7,22,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>上导油冷器出水温度
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,3,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>水导油冷器出水温度
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>上机架X、Y向水平振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>上机架垂直振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>下机架X、Y向水平振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>下机架垂直振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>顶盖X、Y向水平振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>定子机座X、Y向水平振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>定子机座垂直振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>定子铁芯水平振动
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>上导X、Y向摆度
+                                            </td>
+                                            <td>111</td>
+                                            <td><span class="line">5,8,9,6,5,9,7,3,5,2</span></td>
+                                            <td>发电状态分024</td>
+                                            <td>2017.11.11</td>
+                                            <td><a href="table_basic.html#"><i class="fa fa-check text-navy"></i></a>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- End Panel Other -->
+
+
+
+        </div>
+        <!-- ECharts -->
+        <script src="/static/hadmin/js/plugins/echarts/echarts-all.js"></script>
+        <script>
+            $("#city").citySelect({
+                url:"/static/js/city.min.js",
+                prov:"湖南", //省份
+                city:"长沙", //城市
+                dist:"岳麓区", //区县
+                nodata:"none" //当子集无数据时，隐藏select
+            });
+ 
+        </script>
+        <!-- 全局js -->
+        <!--jquery-->
+        <script src="/static/hadmin/js/jquery.min.js"></script>
+        <script src="/static/hadmin/js/bootstrap.min.js"></script>
+        <!-- 自定义js -->
+        <script src="/static/hadmin/js/content.js?v=1.0.0"></script>
+
+
+
+
+        <!-- Bootstrap table -->
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.2.0/locale/bootstrap-table-zh-CN.min.js"></script>
+
+        <!-- Peity -->
+        <script src="/static/hadmin/js/plugins/peity/jquery.peity.min.js"></script>
+
+        <script src="/static/hadmin/js/demo/bootstrap-table-demo.js"></script>
+
+        <script>
+
+            $(".line").peity("line");
+        </script>
+    </div>
+
+    </div>
+</section>
+<div th:include="console/footer"></div>
+</body>
+
+</html>

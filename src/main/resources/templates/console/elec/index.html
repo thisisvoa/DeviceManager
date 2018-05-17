@@ -1,0 +1,411 @@
+<!DOCTYPE HTML>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:include="console/header">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.0/clipboard.min.js"></script>
+</head>
+<body>
+
+<section class="content table-content">
+    <div class="gray-bg">
+        <div class="row wrapper border-bottom white-bg page-heading">
+            <div class="col-sm-12">
+                <h2>当前位置</h2>
+                <ol class="breadcrumb">
+                    <li>
+                        <a>主页</a>
+                    </li>
+                    <li>
+                        <strong>电厂管理</strong>
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="wrapper wrapper-content animated fadeInRight">
+
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-title">
+                    <h5>电厂管理</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="row row-lg">
+                        <div class="col-sm-12">
+                            <div class="btn-group hidden-xs" id="exampleToolbar" role="group">
+                                <button type="button" class="btn btn-outline btn-default" id="adduser">
+                                    <i class="glyphicon glyphicon-plus" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-edit" aria-hidden="true"></i>
+                                </button>
+                                <button type="button" class="btn btn-outline btn-default">
+                                    <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <section class="content table-content">
+                                <table id="dataGrid"></table>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-layer" id="add" style="display: none">
+            <form role="form" class="form-horizontal m-t">
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">电厂名称：</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" id ='elecName' name="elecName"  />
+                        <input type="hidden" id ='id' name="id"  />
+                    </div>
+                </div>
+                <div class="form-group draggable ui-draggable">
+                    <label class="col-sm-3 control-label">描述：</label>
+                    <div class="col-sm-7">
+                        <input type="text" name="description" id="description" class="form-control"/>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</section>
+
+
+        <!-- 全局js -->
+        <!--jquery-->
+        <script src="/static/hadmin/js/jquery.min.js"></script>
+        <script src="/static/hadmin/js/bootstrap.min.js"></script>
+        <!-- 自定义js -->
+        <script src="/static/hadmin/js/content.js?v=1.0.0"></script>
+
+
+        <!-- Bootstrap table -->
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+        <script type="text/javascript" src="http://cdn.bootcss.com/bootstrap-table/1.2.0/locale/bootstrap-table-zh-CN.min.js"></script>
+        <!-- Peity -->
+        <script src="/static/hadmin/js/demo/bootstrap-table-demo.js"></script>
+        <script src="/static/hadmin/js/plugins/layer/layer.min.js"></script>
+
+<script type="text/javascript">
+
+    $table = $("#dataGrid");
+    var table_url='/console/elec/list';
+
+    var table_opt = {
+        url: table_url,
+        silent: true
+
+    };
+
+    function initDataGrid(){
+        $table.bootstrapTable({
+            idField : "id",
+            columns: [[
+                {title: "编号", field: "id"},
+                {title: "电厂名称", field: "elecName"},
+                {title: "描述说明", field: "description"},
+                {title: "访问地址", field: "",
+                    formatter: function (value, row, index) {
+
+
+                        return '<button class="btn btn-primary btn-sm" onclick="addrow1(\'' + row.id + '\')">预览访问</button> <span>    </span><span></span>'+'<button class="btn btn-primary btn-sm" id="\''+ row.id +'\'" onclick="addrow2(\'' + row.id + '\')">复制地址url</button>';
+
+
+                    }},
+                {
+                    title: "创建时间", field: "createdAt", sortable: true,
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
+                },
+                {
+                    title: "更新日期", field: "updatedAt", sortable: true,
+                    formatter: function (value, row, index) {
+                        return changeDateFormat(value)
+                    }
+                },
+                {title: "操作", field: "operate", align: 'center', events: operateEvents, formatter: operateFormatter}
+            ]],
+            url : table_url,
+            queryParams: function(params){
+                return params;
+            },
+            responseHandler : function (res) {
+                return {
+                    rows : res.result.pageInfo.list,
+                    total : res.result.pageInfo.total
+                }
+            },
+            search : true,
+            searchOnEnterKey : true,
+            sortName : 'createdAt',
+            sortOrder : 'asc',
+            pagination : true,
+            sidePagination : 'server',
+            pageSize: 20,
+            pageList : [20, 40, 50, 100],
+            toolbar : "#toolbar",
+            showRefresh : true,
+            showToggle : true
+        });
+    }
+
+    function addrow2(id){
+        var clipBoardContent ="/console/device/"+id+"/view.do";
+        var html = clipBoardContent ;
+
+        layer.open(
+            {
+                type:1,
+                title: '复制地址',
+                content: html,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['380px', '250px']
+            }
+        );
+
+
+    }
+    function addrow1(id) {
+        var url ="/console/device/"+id+"/toview.do";
+        layer.open(
+            {
+                type:2,
+                title: '预览',
+                content: url,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['1180px', '650px']
+            }
+        );
+       /* $.get(url, {}, function(str){
+            layer.open({
+                type: 1,
+                content: str //注意，如果str是object，那么需要字符拼接。
+            });
+        });*/
+    }
+    //修改——转换日期格式(时间戳转换为datetime格式)
+    function changeDateFormat(cellval) {
+        if (cellval != null) {
+            var date = new Date(cellval);
+            if (date == undefined) {
+                date = new Date();
+            }
+
+            var    pattern = "yyyy-MM-dd hh:mm:ss";
+
+            return date.format(pattern);
+        }
+    }
+    $(function () {
+
+        initDataGrid();
+
+        //更新排序
+        $("input[name=listorder]").on('keyup',function () {
+            var _id = $(this).data('id')
+            var _listorder = $(this).val();
+            if(!isNaN(_listorder)){
+                $.post( '/console/elec/listorder',{
+                    id: _id,
+                    listorder: _listorder
+                },function (ret) {
+                    if(ret.status==1){
+                        window.location.reload();
+                    }
+                });
+            }
+        });
+        //删除处理
+        $(".remove").on('click', function () {
+            var _this = $(this);
+            layer.confirm('确定删除吗?', function(){
+                $.getJSON('/console/elec/delete', {ids:_this.data('id')}, function(ret){
+                    if (ret.status){
+                        layer.msg(ret.msg, {icon: 1},function () {
+                            $('#'+_this.data('id')).hide();
+                        });
+                    } else {
+                        layer.msg(ret.msg, {icon: 2});
+                    }
+                });
+            });
+        })
+    });
+
+
+    $("#adduser").click(function () {
+        $("#add").css('display','block');
+        layer.open({
+            type: 1,
+            shade: false,
+            title: "添加修改水电站信息", //不显示标题
+            content: $('#add'),
+            move:false,
+            area: ['850px', '600px'],
+            btn:["确认","取消"],
+            yes: function(index, layero){
+                //按钮【按钮一】的回调
+                var elecName=$("#add").find("#elecName").val();
+                var description=$("#add").find("#description").val();
+                var data1={id:null,elecName:elecName,description:description};
+                $.ajax({
+                    url : "/console/elec/save",
+                    type : "POST",
+                    data: data1,
+                    dataType : "json",
+                    success : function(data){
+                        console.log(data);
+
+                        layer.close(index); //如果设定了yes回调，需进行手工关闭
+
+                        $table.bootstrapTable('refresh', table_opt);
+                    }
+                });
+
+                $("#add").css('display','none');
+                $("#add").hide();
+            },btn2: function(index, layero){
+
+                $("#add").css('display','none');
+                $("#add").hide();
+                //按钮【按钮二】的回调
+            },btn3: function(index, layero){
+                $("#add").css('display','none');
+                $("#add").hide();
+                //按钮【按钮三】的回调
+            }
+            ,cancel: function(){
+                //右上角关闭回调
+                $("#add").css('display','none');
+                $("#add").hide();
+            }
+        });
+    })
+
+    function operateFormatter(value, row, index) {
+            return [
+                '<a class="modify" href="javascript:void(0);" >',
+                '<i class="glyphicon glyphicon-edit"></i>修改',
+                '</a>  ',
+                '<a class="remove" href="javascript:void(0);">',
+                '<i class="glyphicon glyphicon-remove"></i>删除',
+                '</a>'
+            ].join('');
+    }
+
+    window.operateEvents = {
+        'click .remove': function (e, value, row, index) {
+            var url='/console/elec/delete';
+            layer.confirm('确定删除吗?', function(){
+                $.getJSON(url, {ids:row.id}, function(ret){
+                    if (ret.status){
+                        $table.bootstrapTable('refresh', table_opt);
+                        layer.msg(ret.msg, {icon: 1});
+                        $table.bootstrapTable('remove', {
+                            field: field,
+                            values: [row.id]
+                        });
+                    } else {
+                        layer.msg(ret.msg, {icon: 2});
+                    }
+                });
+            });
+        },
+
+        'click .modify': function (e, value, row, index) {
+            var url='/console/elec/from?id='+row.id;
+
+                $.getJSON(url, function(ret){
+                    if (ret.success==1){
+                        var data=ret.data;
+                        $('#add').find("input[name='id']").val(data.id);
+                        $('#add').find("input[name='updatedAt']").val(data.updatedAt);
+                        $('#add').find("input[name='elecName']").val(data.elecName);
+                        $('#add').find("input[name='description']").val(data.description);
+                        layer.open({
+                            type: 1,
+                            shade: false,
+                            title: "修改水电站信息", //不显示标题
+                            content: $('#add'),
+                            move:false,
+                            area: ['850px', '600px'],
+                            btn:["确认","取消"],
+                            yes: function(index, layero){
+                                //按钮【按钮一】的回调
+                                var elecName=$("#add").find("#elecName").val();
+                                var id=$('#add').find("input:hidden[name='id']").val();
+                                var description=$('#add').find("input[name='description']").val();
+
+                                var data1={'id':id,'elecName':elecName,'description':description};
+                                $.ajax({
+                                    url : "/console/elec/save",
+                                    type : "POST",
+                                    data: data1,
+                                    dataType : "json",
+                                    success : function(data){
+                                        console.log(data);
+
+                                        layer.close(index); //如果设定了yes回调，需进行手工关闭
+
+                                        $table.bootstrapTable('refresh', table_opt);
+                                    }
+                                });
+
+                                $("#add").css('display','none');
+                                $("#add").hide();
+                            },btn2: function(index, layero){
+
+                                $("#add").css('display','none');
+                                $("#add").hide();
+                                //按钮【按钮二】的回调
+                            },btn3: function(index, layero){
+                                $("#add").css('display','none');
+                                $("#add").hide();
+                                //按钮【按钮三】的回调
+                            }
+                            ,cancel: function(){
+                                //右上角关闭回调
+                                $("#add").css('display','none');
+                                $("#add").hide();
+                            }
+                        });
+
+
+                    } else {
+                        layer.msg(ret.msg, {icon: 2});
+                    }
+                });
+
+        }
+
+    };
+
+
+    Date.prototype.format = function (format) {
+        var o = {
+            "M+": this.getMonth() + 1,
+            "d+": this.getDate(),
+            "h+": this.getHours(),
+            "m+": this.getMinutes(),
+            "s+": this.getSeconds(),
+            "q+": Math.floor((this.getMonth() + 3) / 3),
+            "S": this.getMilliseconds()
+        }
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+        }
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    }
+
+</script>
+
+ </body>
+</html>
