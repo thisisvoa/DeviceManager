@@ -47,7 +47,7 @@ public class ParseMsgThread extends Thread {
 				logger.info("消息头：" + head.toString());
 
 				// 生成消息后产生handler
-				AbsMsg msg = MsgFactory.genMsg(head, msgbytes);
+				AbsMsg msg = MsgFactory.genMsg(head, decode);
 				System.out.println(head.toString());
 				if (msg == null) {
 					logger.error(Integer.toHexString(head.getMsgid()) + "消息不存在");

@@ -107,4 +107,13 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 		}
 	}
 
+	@Override
+	public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+		super.channelUnregistered(ctx);
+	}
+
+	@Override
+	public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+		super.channelRegistered(ctx);
+	}
 }

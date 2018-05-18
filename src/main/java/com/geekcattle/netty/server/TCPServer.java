@@ -10,6 +10,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import io.netty.handler.timeout.ReadTimeoutHandler;
 import org.slf4j.Logger;
 
 import com.geekcattle.netty.cache.MsgCache;
@@ -95,7 +96,7 @@ public class TCPServer extends Thread {
 								public void initChannel(SocketChannel ch)
 										throws Exception {
 									 ch.pipeline().addLast(new TCPCodec(),new
-									 TCPServerHandler());
+									 TCPServerHandler(),new ReadTimeoutHandler(3000));
 								}
 							}).option(ChannelOption.SO_BACKLOG, 128) // (5)
 					.childOption(ChannelOption.SO_KEEPALIVE, true); // (6)
@@ -107,7 +108,11 @@ public class TCPServer extends Thread {
 		} catch (InterruptedException e) {
 			logger.error("run()", e); //$NON-NLS-1$
 			e.printStackTrace();
-		} finally {
+		}catch (Exception ex){
+			ex.printStackTrace();
+		}
+
+		finally {
 			// workerGroup.shutdownGracefully();
 			// bossGroup.shutdownGracefully();
 		}

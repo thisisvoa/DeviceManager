@@ -60,6 +60,7 @@ public class TCPCodec extends ByteToMessageCodec<AbsMsg> {
 	protected void encode(ChannelHandlerContext ctx, AbsMsg msg, ByteBuf out)
 			throws Exception {
 		byte[] bt = msg.toBytes();
+		//byte[] bt1 = msg.toBytes1();
 		logger.info("发送消息："+Converter.bytes2HexsSpace(bt));
 		out.writeBytes(bt);
 	}

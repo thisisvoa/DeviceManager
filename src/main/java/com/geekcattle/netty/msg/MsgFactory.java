@@ -33,8 +33,7 @@ public class MsgFactory {
 		}
 		// 判断 校验位
 		if (xor != msgbytes[msgbytes.length - 1])
-		System.out.println("xor------"+xor+"msgbytes[msgbytes.length - 1]------"+msgbytes[msgbytes.length - 1]);
-			//return null;
+			return null;
 
 		ByteBuffer bf = ByteBuffer.wrap(msgbytes);
 		logger.info("处理消息："+Converter.bytes2HexsSpace(msgbytes));
