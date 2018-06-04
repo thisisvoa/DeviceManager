@@ -12,16 +12,21 @@ import com.geekcattle.netty.msg.MSG_0x3003;
 import com.geekcattle.netty.server.TCPServer;
 import com.geekcattle.utils.soket.msg.ClientManager;
 import com.geekcattle.utils.utils.DataTypeUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
  * 链路登陆handler
- * @author sid
+ * @author nifeng
  *
  */
 public class Handler0x0001 implements IHandler {
 
 	Logger logger = LoggerFactory.getLogger(Handler0x0001.class);
+
+	@Autowired(required = true)
+	private ClientManager clientManager;
+
 
 	// 0x00：成功
 	// 0x01：IP地址不正确
@@ -43,12 +48,12 @@ public class Handler0x0001 implements IHandler {
 				TcpUser user = getTcpUserByMac(mac);
 				if(DataTypeUtil.isNotEmpty(user)){
 					response.setState((byte)1);
-					ClientManager.addClient(ctx, user);
+					clientManager.addClient(ctx, user);
 				}else{
 					response.setState((byte)0);
 					response.setErrormsg("mac校验错误");
 				}
-				TCPServer.getSingletonInstance().sendWithoutCache(response);
+				ctx.writeAndFlush(response);
 			} else {
 				logger.error("登录消息强转失败:"+m.toString());
 			}

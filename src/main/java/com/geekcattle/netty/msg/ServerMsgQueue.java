@@ -6,7 +6,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * 
  * 消息队列
  * 
- * @author sid
+ * @author nifeng
  *
  */
 public class ServerMsgQueue {

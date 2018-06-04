@@ -3,7 +3,7 @@
  * File Name:MsgCacheConstants.java
  * Package Name:com.hdsx.taxi.driver.cq.cache
  * Date:2014年4月9日上午11:09:47
- * Copyright (c) 2014, sid Jenkins All Rights Reserved.
+ * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
  * 
  *
  */
@@ -14,7 +14,7 @@ package com.geekcattle.utils.cache.ehcache.main;
  * ClassName:MsgCacheConstants 
  * REASON. Date: 2014年4月9日 上午11:09:47
  * 
- * @author sid
+ * @author nifeng
  * @see
  */
 public class MsgCacheConstants {

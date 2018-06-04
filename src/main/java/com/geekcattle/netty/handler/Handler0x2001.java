@@ -1,8 +1,10 @@
 package com.geekcattle.netty.handler;
 
+import com.geekcattle.utils.soket.msg.ClientManager;
 import io.netty.channel.ChannelHandlerContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import com.geekcattle.netty.msg.*;
 import com.geekcattle.netty.server.TCPServer;
@@ -11,12 +13,16 @@ import com.geekcattle.SpringUtil;
 /**
  * 
  * 链路登陆handler
- * @author sid
+ * @author nifeng
  *
  */
 public class Handler0x2001 implements IHandler {
 
 	Logger logger = LoggerFactory.getLogger(Handler0x2001.class);
+
+	@Autowired(required = true)
+	private ClientManager clientManager;
+
 	@Bean
 
 	public SpringUtil springUtil2(){

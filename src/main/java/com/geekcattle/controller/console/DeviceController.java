@@ -47,7 +47,7 @@ public class DeviceController {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
+    TCPServer tcpServer;
     @Autowired
     private MemberService memberService;
 
@@ -81,7 +81,8 @@ public class DeviceController {
         MsgHeader dd=new MsgHeader();
         request.setHead(dd);
         long seq = request.getHead().getSeq();
-        TCPServer.getSingletonInstance().sendWithoutCache(request);
+        tcpServer.sendWithoutCache(request);
+//        TCPServer.getSingletonInstance().sendWithoutCache(request);
         MsgFutureManager msgFutureManager = (MsgFutureManager) SpringUtil.getBean("msgFutureManager");
         String json = null;
         MSG_0x2001 sessionFuture = null;

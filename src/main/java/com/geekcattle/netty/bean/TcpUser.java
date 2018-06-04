@@ -5,7 +5,7 @@ import java.util.HashMap;
 /**
  * Tcp用户实体
  * 
- * @author sid
+ * @author nifeng
  *
  */
 public class TcpUser extends BaseBean {

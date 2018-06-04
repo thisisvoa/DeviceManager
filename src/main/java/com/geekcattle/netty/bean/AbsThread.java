@@ -3,13 +3,15 @@ package com.geekcattle.netty.bean;
 /**
  * 
  * 线程抽象类
- * @author sid
+ * @author nifeng
  *
  */
 public abstract class AbsThread {
 
 	public boolean isRun = false;
-
+	public void run() {
+		run(0, 0);
+	}
 	public void run(long delay, long period) {
 		if (isRun)
 			return;

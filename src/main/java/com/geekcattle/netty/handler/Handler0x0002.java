@@ -9,22 +9,24 @@ import com.geekcattle.netty.bean.Client;
 import com.geekcattle.netty.msg.AbsMsg;
 import com.geekcattle.netty.msg.MSG_0x0002;
 import com.geekcattle.utils.soket.msg.ClientManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 
  * 链路登陆handler
- * @author sid
+ * @author nifeng
  *
  */
 public class Handler0x0002 implements IHandler {
 
 	Logger logger = LoggerFactory.getLogger(Handler0x0002.class);
-
+	@Autowired(required = true)
+	private ClientManager clientManager;
 	public void doHandle(AbsMsg m, ChannelHandlerContext ctx) {
 		try {
 			if (m instanceof MSG_0x0002) {
 				logger.info("心跳消息:"+m.getHead().getMac());
-				Client client = ClientManager.getClient(ctx);
+				Client client = clientManager.getClient(ctx);
 				ClientManager.setClientLastTime(ctx, client);
 			} else {
 				logger.error("登录消息强转失败:"+m.toString());

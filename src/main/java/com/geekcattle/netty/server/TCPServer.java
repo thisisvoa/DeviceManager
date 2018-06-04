@@ -1,16 +1,19 @@
 package com.geekcattle.netty.server;
 
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
+import io.netty.channel.*;
+import io.netty.channel.group.ChannelGroup;
+import io.netty.channel.group.ChannelGroupFuture;
+import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
+import io.netty.handler.logging.LogLevel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.timeout.ReadTimeoutHandler;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GlobalEventExecutor;
 import org.slf4j.Logger;
 
 import com.geekcattle.netty.cache.MsgCache;
@@ -22,6 +25,11 @@ import com.geekcattle.utils.soket.msg.Converter;
 import com.geekcattle.utils.soket.msg.TCPCodec;
 import com.geekcattle.utils.utils.LogUtil;
 import com.geekcattle.utils.utils.PropertiesUtil;
+import org.slf4j.LoggerFactory;
+
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 
 /**
@@ -29,31 +37,116 @@ import com.geekcattle.utils.utils.PropertiesUtil;
  * ClassName: TCPServer 
  * date: 2015年1月29日 下午4:11:19 
  *
- * @author sid
+ * @author nifeng
  */
-public class TCPServer extends Thread {
+public class TCPServer extends AbstractServer  {
 
-	private volatile static TCPServer instance = null;
+	public static final ChannelGroup ALL_CHANNELS = new DefaultChannelGroup("KNIGHT-QRCODE-TCP-CHANNELS", GlobalEventExecutor.INSTANCE);
 
-	public static TCPServer getSingletonInstance() {
-		if (instance == null) {
-			synchronized (TCPServer.class) {
-				if (instance == null) {
-					instance = new TCPServer();
-				}
-			}
-			instance = new TCPServer();
-		}
-		return instance;
+	private static final Logger LOG = LoggerFactory.getLogger(TCPServer.class);
+
+	private ServerBootstrap serverBootstrap;
+
+	public static ChannelHandlerContext chtx;
+
+
+	public TCPServer(NettyConfig nettyConfig, ChannelInitializer<? extends Channel> channelInitializer) {
+		super(nettyConfig, channelInitializer);
 	}
 
-	private TCPServer() {}
-	
-	public static ChannelHandlerContext chtx;
 	private ChannelFuture cf;
 	private Logger logger = LogUtil.getInstance().getLogger(TCPServer.class);
 
 	@Override
+	public TransmissionProtocol getTransmissionProtocol() {
+		return TRANSMISSION_PROTOCOL.TCP;
+	}
+
+	@Override
+	public void startServer() throws Exception {
+		try {
+			serverBootstrap = new ServerBootstrap();
+			LOG.info("****** Start the CarLock TCP server, port {} ******", this.getNettyConfig().getPortNumber());
+			if (getChannelInitializer() == null) {
+				LOG.error("****** Start the CarLock TCP server failed, port {}. Please check the server config. ******", nettyConfig.getPortNumber());
+				return;
+			}
+
+			Map<ChannelOption<?>, Object> chnOptions = nettyConfig.getChannelOptions();
+			if (null != chnOptions && chnOptions.size() > 0) {
+				Set<ChannelOption<?>> set = chnOptions.keySet();
+				for (ChannelOption opt : set) {
+					serverBootstrap.childOption(opt, chnOptions.get(opt));
+				}
+			}
+
+			serverBootstrap.group(getBossGroup(), getWorkerGroup())
+					.channel(NioServerSocketChannel.class)
+					.childHandler(getChannelInitializer())
+					.handler(new LoggingHandler(LogLevel.INFO));
+			final ChannelFuture cf = serverBootstrap.bind(nettyConfig.getSocketAddress());
+			cf.addListener(new ChannelFutureListener() {
+				@Override
+				public void operationComplete(ChannelFuture future) throws Exception {
+					if (cf.isSuccess()) {
+						ALL_CHANNELS.add(cf.channel());
+						LOG.info("****** Start the CarLock TCP server successfully, port {} ******", nettyConfig.getPortNumber());
+					} else {
+						LOG.info("****** Start the CarLock TCP server failed, port {}. The cause is {} ******", nettyConfig.getPortNumber(), cf.cause());
+					}
+				}
+			});
+		} catch (Exception e) {
+
+			LOG.error("Visitor TCP Server start error {}, going to shut down", e);
+			stopServer();
+			throw e;
+
+		}
+	}
+
+	@Override
+	public void stopServer() throws Exception {
+		LOG.debug("In stopServer method of class: {}", this.getClass()
+				.getName());
+		ChannelGroupFuture future = ALL_CHANNELS.close();
+		try {
+			future.await();
+		} catch (InterruptedException e) {
+			LOG.error(
+					"Execption occurred while waiting for channels to close: {}",
+					e);
+		} finally {
+			// TODO move this part to spring.
+			if (null != nettyConfig.getBossGroup()) {
+				Future fb = nettyConfig.getBossGroup().shutdownGracefully(0, 1, TimeUnit.MILLISECONDS);
+				try {
+					fb.await();
+				} catch (InterruptedException ignore) {
+					LOG.error("Exception while waiting for tcpserver to complete shutdown  ", ignore);
+				}
+			}
+			if (null != nettyConfig.getWorkerGroup()) {
+				Future fw = nettyConfig.getWorkerGroup().shutdownGracefully(0, 1, TimeUnit.MILLISECONDS);
+				try {
+					fw.await();
+				} catch (InterruptedException ignore) {
+					LOG.error("Exception while waiting for proxy to tcpserver shutdown  ", ignore);
+				}
+			}
+		}
+	}
+
+
+	@Override
+	public void setChannelInitializer(ChannelInitializer<? extends Channel> initializer) {
+		this.channelInitializer = initializer;
+		serverBootstrap.childHandler(initializer);
+
+
+	}
+
+	/*@Override
 	public void run() {
 		if (logger.isDebugEnabled()) {
 			logger.debug("run() - start"); //$NON-NLS-1$
@@ -82,9 +175,9 @@ public class TCPServer extends Thread {
 		if (logger.isDebugEnabled()) {
 			logger.debug("run() - end"); //$NON-NLS-1$
 		}
-	}
+	}*/
 
-	private void init() {
+	/*private void init() {
 		EventLoopGroup bossGroup = new NioEventLoopGroup(); // (1)
 		EventLoopGroup workerGroup = new NioEventLoopGroup();
 		try {
@@ -116,13 +209,13 @@ public class TCPServer extends Thread {
 			// workerGroup.shutdownGracefully();
 			// bossGroup.shutdownGracefully();
 		}
-	}
+	}*/
 
 	/**
 	 * 
 	 * closeConnect
 	 *
-	 * @author sid
+	 * @author nifeng
 	 */
 	public void closeConnect() {
 		try {
@@ -136,7 +229,7 @@ public class TCPServer extends Thread {
 	 * 
 	 * send:(发送消息).
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param m
 	 */
 	public void send(AbsMsg m) {

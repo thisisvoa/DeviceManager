@@ -13,7 +13,7 @@ import com.geekcattle.utils.utils.LogUtil;
  * Reason: 客户端通用
  * date: 2014年10月15日 下午2:41:47 
  *
- * @author sid
+ * @author nifeng
  */
 public class MSG_0x0003 extends AbsMsg {
 	

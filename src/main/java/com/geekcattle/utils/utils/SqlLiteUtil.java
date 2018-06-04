@@ -3,7 +3,7 @@
  * File Name:SqlLiteUtil.java
  * Package Name:test
  * Date:2014年10月20日上午9:08:46
- * Copyright (c) 2014, sid Jenkins All Rights Reserved.
+ * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
  * 
  *
 */
@@ -19,7 +19,7 @@ import java.sql.*;
  * Function: TODO ADD FUNCTION. 
  * Reason:	 TODO ADD REASON. 
  * Date:     2014年10月20日 上午9:08:46 
- * @author   sid
+ * @author   nifeng
  * @see 	 
  */
 public class SqlLiteUtil {
@@ -31,7 +31,7 @@ public class SqlLiteUtil {
 	 * 
 	 * tableExist:(判断当前表是否存在). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param stmt
 	 * @param tablename
 	 * @return
@@ -63,7 +63,7 @@ public class SqlLiteUtil {
 	 * 
 	 * init:(初始化oauth认证需要的表). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param stmt
 	 */
 	public static void initTables(Statement stmt){
@@ -111,7 +111,7 @@ public class SqlLiteUtil {
 			//声明JDBC驱动程序
 			Class.forName("org.sqlite.JDBC");
 			//连接数据库
-			conn = DriverManager.getConnection("jdbc:sqlite:/D:/sid/work/workspace_git/oauth2/database/oauth.db");
+			conn = DriverManager.getConnection("jdbc:sqlite:/D:/nifeng/work/workspace_git/oauth2/database/oauth.db");
 			stmt = conn.createStatement();
 			//develop,updatetime
 			if(!tableExist(stmt,"develop")){

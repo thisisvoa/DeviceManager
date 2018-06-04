@@ -7,6 +7,7 @@ import com.geekcattle.netty.msg.MsgFactory;
 import com.geekcattle.netty.msg.MsgHeader;
 import com.geekcattle.netty.msg.ReciPackBean;
 import com.geekcattle.utils.soket.msg.Constants;
+import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +16,7 @@ import java.nio.ByteBuffer;
 /**
  * 
  * 处理消息线程
- * @author sid
+ * @author nifeng
  *
  */
 public class ParseMsgThread extends Thread {
@@ -23,9 +24,10 @@ public class ParseMsgThread extends Thread {
 	private static final Logger logger = LoggerFactory.getLogger(ParseMsgThread.class);
 
 	private ReciPackBean rpb;
-
-	public ParseMsgThread(ReciPackBean rpb) {
+	private HandlerFactory handlerFactory;
+	public ParseMsgThread(ReciPackBean rpb, HandlerFactory handlerFactory) {
 		this.rpb = rpb;
+		this.handlerFactory = handlerFactory;
 	}
 
 	@Override
@@ -55,7 +57,7 @@ public class ParseMsgThread extends Thread {
 				}
 				logger.info("消息体：" + msg.toString());
 				// 交给对应handler处理
-				IHandler handler = HandlerFactory.getHandler(msg);
+				IHandler handler = handlerFactory.getHandler(msg);
 				if (handler != null) {
 					handler.doHandle(msg, rpb.getChannel());
 				}
@@ -66,6 +68,7 @@ public class ParseMsgThread extends Thread {
 
 		} catch (Exception e) {
 			logger.error("接受消息队列处理数据错误", e);
+			this.interrupt();
 		}
 	}
 
@@ -93,6 +96,7 @@ public class ParseMsgThread extends Thread {
 	 * @return
 	 */
 	private byte[] decode(byte[] b) {
+
 		ByteBuffer buffer = ByteBuffer.allocate(5 * 1024 * 1024);
 		ByteBuffer buffer1 = ByteBuffer.wrap(b);
 		buffer.position(0);

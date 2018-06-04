@@ -6,7 +6,7 @@ import io.netty.channel.ChannelHandlerContext;
  * 
  * 封装hanler类
  * 
- * @author sid
+ * @author nifeng
  *
  */
 public class ReciPackBean {

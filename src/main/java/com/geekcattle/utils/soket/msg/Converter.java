@@ -18,7 +18,7 @@ import java.util.Date;
 /**
  * 字节转换工具类
  * 
- * @author sid
+ * @author nifeng
  * 
  */
 public class Converter {
@@ -243,7 +243,7 @@ public class Converter {
 	 * 
 	 * int2Double:(经纬度从int转换成double). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param i
 	 * @return
 	 */
@@ -259,7 +259,7 @@ public class Converter {
 	 * 
 	 * double2Int:(经纬度从double转换成int). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param i
 	 * @return
 	 */

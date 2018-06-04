@@ -11,7 +11,7 @@ import com.geekcattle.utils.soket.msg.Converter;
 /**
  * 
  * 消息工厂
- * @author sid
+ * @author nifeng
  *
  */
 public class MsgFactory {

@@ -3,13 +3,14 @@
  * File Name:TCPServerHandler.java
  * Package Name:com.hdsx.taxi.driver.cq.tcp
  * Date:2014年4月10日上午10:49:15
- * Copyright (c) 2014, sid Jenkins All Rights Reserved.
+ * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
  * 
  *
  */
 
 package com.geekcattle.netty.server;
 
+import com.geekcattle.netty.handler.HandlerFactory;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -25,12 +26,13 @@ import com.geekcattle.netty.msg.ReciPackBean;
 import com.geekcattle.netty.msg.ServerMsgQueue;
 import com.geekcattle.utils.soket.msg.ClientManager;
 import com.geekcattle.utils.utils.LogUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * ClassName:TCPServerHandler Function: TODO ADD FUNCTION. Reason: TODO ADD
  * REASON. Date: 2014年4月10日 上午10:49:15
  * 
- * @author sid
+ * @author nifeng
  * @see
  */
 @ChannelHandler.Sharable
@@ -41,7 +43,11 @@ public class TCPServerHandler extends ChannelInboundHandlerAdapter {
 	private static final Logger logger = LogUtil.getInstance().getLogger(TCPServerHandler.class);
 	public static boolean isrunning = false;
 	public static Timer timer = new Timer();
+	@Autowired
+	private HandlerFactory handlerFactory;
 
+	@Autowired
+	private ClientManager clientManager;
 	@Override
 	public void channelRead(ChannelHandlerContext ctx, Object msg) {
 		try {

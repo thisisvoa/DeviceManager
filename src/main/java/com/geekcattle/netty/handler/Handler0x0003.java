@@ -12,7 +12,7 @@ import com.geekcattle.netty.msg.MSG_0x0003;
 /**
  * 
  * 链路登陆handler
- * @author sid
+ * @author nifeng
  *
  */
 public class Handler0x0003 implements IHandler {

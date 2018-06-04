@@ -7,6 +7,7 @@ import com.geekcattle.netty.bean.Client;
 import com.geekcattle.netty.bean.TcpUser;
 import com.geekcattle.netty.msg.AbsMsg;
 import com.geekcattle.netty.msg.MsgHeader;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
@@ -18,10 +19,13 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 客户端管理工具
  * 
- * @author sid
+ * @author nifeng
  *
  */
 public class ClientManager {
+
+	@Autowired(required = false)
+	private Integer heartbeatDelay;
 
 	private static final Logger logger = LoggerFactory
 			.getLogger(ClientManager.class);
@@ -333,5 +337,13 @@ public class ClientManager {
 			}
 		}
 		return ip_port;
+	}
+
+	public Integer getHeartbeatDelay() {
+		return heartbeatDelay;
+	}
+
+	public void setHeartbeatDelay(Integer heartbeatDelay) {
+		this.heartbeatDelay = heartbeatDelay;
 	}
 }

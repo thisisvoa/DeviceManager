@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * 客户端实体
  * 
- * @author sid
+ * @author nifeng
  *
  */
 public class Client {

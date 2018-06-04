@@ -11,7 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Function: 日志记录类
  * date: 2014年10月22日 上午9:33:55 
  *
- * @author sid
+ * @author nifeng
  */
 public class LogUtil {
 	
@@ -38,7 +38,7 @@ public class LogUtil {
      * 
      * getLogger:(根据Class类型获取其对应的logger). 
      *
-     * @author sid
+     * @author nifeng
      * @param cls
      * @return
      */

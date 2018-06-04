@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.geekcattle.utils.soket.msg.ClientManager;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * 检查长时间未活跃的客户端
@@ -19,18 +20,16 @@ public class CheckClientThread extends AbsThread {
 	private static final Logger logger = LoggerFactory
 			.getLogger(CheckClientThread.class);
 
-	static CheckClientThread obj;
-
-	public static CheckClientThread getInstance() {
-		if (obj == null)
-			obj = new CheckClientThread();
-		return obj;
-	}
+	@Autowired
+	private ClientManager clientManager;
+	@Autowired(required = false)
+	private Integer clientdelay;
+	@Autowired(required = false)
+	private Integer period;
 
 	private Timer timer = new Timer();
 
-	@Override
-	public void runThread(long delay, long period) {
+	public void runThread() {
 		timer = new Timer();
 		try {
 			timer.schedule(new TimerTask() {
@@ -42,7 +41,7 @@ public class CheckClientThread extends AbsThread {
 						logger.error("检查登陆客户端异常:",e);
 					}
 				}
-			}, delay * 1000, period * 1000);
+			}, getClientdelay() * 1000, period * 1000);
 		} catch (Exception e) {
 			logger.info("检查客户端线程异常：",e);
 			e.printStackTrace();
@@ -51,4 +50,40 @@ public class CheckClientThread extends AbsThread {
 
 	}
 
+	public Integer getClientdelay() {
+		return clientdelay;
+	}
+
+	public void setClientdelay(Integer clientdelay) {
+		this.clientdelay = clientdelay;
+	}
+
+	public Integer getPeriod() {
+		return period;
+	}
+
+	public void setPeriod(Integer period) {
+		this.period = period;
+	}
+
+	@Override
+	public void runThread(long delay, long period) {
+		timer = new Timer();
+		try {
+			timer.schedule(new TimerTask() {
+				@Override
+				public void run() {
+					try {
+						clientManager.checkClient();
+					} catch (Exception e) {
+						logger.error("检查登陆客户端异常:", e);
+					}
+				}
+			}, delay * 1000, period * 1000);
+		} catch (Exception e) {
+			logger.info("检查客户端线程异常：", e);
+			e.printStackTrace();
+
+		}
+	}
 }

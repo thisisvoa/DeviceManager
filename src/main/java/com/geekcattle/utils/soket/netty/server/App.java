@@ -8,6 +8,6 @@ import com.geekcattle.netty.server.TCPServer;
  */
 public class App {
 	public static void main(String[] args) {
-		TCPServer.getSingletonInstance().run();
+
 	}
 }

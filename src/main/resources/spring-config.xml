@@ -1,30 +1,147 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:utils="http://www.springframework.org/schema/util"
-       xmlns:task="http://www.springframework.org/schema/task"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd"
-       default-lazy-init="true">
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
+       http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-4.1.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-4.1.xsd
+">
 
     <description>Spring配置</description>
     <context:component-scan base-package="com.geekcattle.*"></context:component-scan>
 
     <context:component-scan base-package="com.geekcattle.netty.*"></context:component-scan>
-    <aop:aspectj-autoproxy proxy-target-class="true"/>
+<!--    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <utils:list id="serverDefineResources" value-type="org.springframework.core.io.ClassPathResource">
-      <!--  <bean class="org.springframework.core.io.ClassPathResource">
+      &lt;!&ndash;  <bean class="org.springframework.core.io.ClassPathResource">
             <constructor-arg value="server/100.xml"/>
         </bean>
         <bean class="org.springframework.core.io.ClassPathResource">
             <constructor-arg value="server/200.xml"/>
-        </bean>-->
+        </bean>&ndash;&gt;
         <bean class="org.springframework.core.io.ClassPathResource">
             <constructor-arg value="server/50.xml"/>
         </bean>
-    </utils:list>
+    </utils:list>-->
+
+    <context:property-placeholder location="classpath*:netty-config.properties" ignore-unresolvable="true"/>
+    <context:annotation-config/>
+    <bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
+        <property name="caches">
+            <set>
+                <bean name="messageCache" class="org.springframework.cache.concurrent.ConcurrentMapCacheFactoryBean"/>
+            </set>
+        </property>
+    </bean>
+
+
+    <bean id="tcpBossThreadFactory" class="com.geekcattle.netty.concurrent.NamedThreadFactory">
+        <constructor-arg type="java.lang.String" value="carLock-Server-Boss"/>
+    </bean>
+
+    <bean id="tcpWorkerThreadFactory" class="com.geekcattle.netty.concurrent.NamedThreadFactory">
+        <constructor-arg type="java.lang.String" index="0" value="carLock-Server-Worker"/>
+    </bean>
+
+
+    <util:map id="tcpChildOptions" map-class="java.util.HashMap">
+        <entry>
+            <key>
+                <util:constant static-field="io.netty.channel.ChannelOption.SO_KEEPALIVE"/>
+            </key>
+            <value type="java.lang.Boolean">${tcpserver.keepalive}</value>
+        </entry>
+        <entry>
+            <key>
+                <util:constant static-field="io.netty.channel.ChannelOption.TCP_NODELAY"/>
+            </key>
+
+            <value type="java.lang.Boolean">${tcpserver.nodelay}</value>
+        </entry>
+        <entry>
+            <key>
+                <util:constant static-field="io.netty.channel.ChannelOption.SO_SNDBUF"/>
+            </key>
+
+            <value type="java.lang.Integer">2048</value>
+        </entry>
+        <entry>
+            <key>
+                <util:constant static-field="io.netty.channel.ChannelOption.SO_RCVBUF"/>
+            </key>
+
+            <value type="java.lang.Integer">2048</value>
+        </entry>
+    </util:map>
+    <bean id="tcpBossGroup" class="io.netty.channel.nio.NioEventLoopGroup" destroy-method="shutdownGracefully">
+        <constructor-arg type="int" index="0" value="1"/>
+        <constructor-arg index="1" ref="tcpBossThreadFactory"/>
+    </bean>
+
+    <bean id="tcpWorkerGroup" class="io.netty.channel.nio.NioEventLoopGroup" destroy-method="shutdownGracefully">
+        <constructor-arg type="int" index="0" value="5"/>
+        <constructor-arg index="1" ref="tcpWorkerThreadFactory"/>
+    </bean>
+
+    <bean id="tcpConfig" class="com.geekcattle.netty.server.NettyConfig">
+        <property name="channelOptions" ref="tcpChildOptions"/>
+        <property name="bossGroup" ref="tcpBossGroup"/>
+        <property name="workerGroup" ref="tcpWorkerGroup"/>
+        <property name="portNumber" value="${serverport}"/>
+    </bean>
+
+    <bean id="msgHandlerGroup" class="io.netty.util.concurrent.DefaultEventExecutorGroup">
+        <constructor-arg index="0" type="int" value="${knight.business.handler.thread}"></constructor-arg>
+    </bean>
+    <context:property-placeholder location="classpath*:netty-config.properties" ignore-unresolvable="true"/>
+
+    <!-- 客户端更新二维码-->
+    <bean id="handler0X01" class="com.geekcattle.netty.handler.Handler0x0001"></bean>
+    <!-- 心跳同步-->
+    <bean id="handler0X02" class="com.geekcattle.netty.handler.Handler0x0002"></bean>
+    <!-- 客户端通用应答-->
+    <bean id="handler0X03" class="com.geekcattle.netty.handler.Handler0x0003"></bean>
+    <!-- 客户端通用应答-->
+    <bean id="handler0X04" class="com.geekcattle.netty.handler.Handler0x2001"></bean>
+    <!-- 请求分发工厂类-->
+    <bean id="handlerFactory" class="com.geekcattle.netty.handler.HandlerFactory"></bean>
+    <!-- netty 服务处理类-->
+    <bean id="tcpMessageHandler" class="com.geekcattle.netty.server.TCPServerHandler" scope="singleton"/>
+    <!-- 线程池（处理消息）管理-->
+    <bean id="parseMsgThreadManager" class="com.geekcattle.netty.server.thread.ParseMsgThreadManager"
+          init-method="run">
+        <constructor-arg index="0" value="${ParseCorePoolSize}"/>
+        <constructor-arg index="1" value="${ParseMaximumPoolSize}"/>
+        <constructor-arg index="2" value="${ParseKeepAliveTime}"/>
+        <constructor-arg index="3" value="${ParseQueueSize}"/>
+        <property name="handlerFactory" ref="handlerFactory"></property>
+    </bean>
+    <bean id="clientManager" class="com.geekcattle.utils.soket.msg.ClientManager">
+        <property name="heartbeatDelay" value="${tcp.heartbeatdelay}"></property>
+    </bean>
+    <!--启动客户端检查线程-->
+    <bean id="checkClientThread" class="com.geekcattle.netty.server.thread.CheckClientThread" init-method="runThread">
+        <property name="clientdelay" value="${tcp.clientdelay}"></property>
+        <property name="period" value="${tcp.clientperiod}"></property>
+    </bean>
+    <!-- 启动临时客户端管理(秒)-->
+    <bean id="checkTemClientThread" class="com.geekcattle.netty.server.thread.CheckTemClientThread"
+          init-method="runThread">
+        <property name="delay" value="${tcp.temclientdelay}"></property>
+        <property name="period" value="${tcp.temclientperiod}"></property>
+    </bean>
+
+    <bean id="tcpServer" class="com.geekcattle.netty.server.TCPServer" init-method="startServer"
+          destroy-method="stopServer">
+        <constructor-arg ref="tcpConfig"/>
+        <constructor-arg ref="tcpServerChannelInitializer"/>
+    </bean>
+    <bean id="tcpServerChannelInitializer" class="com.geekcattle.netty.server.TCPServerChannelInitializer"></bean>
 
 </beans>

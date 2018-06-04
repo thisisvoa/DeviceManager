@@ -3,7 +3,7 @@
  * File Name:CacheManagerUtil.java
  * Package Name:com.hdsx.taxi.driver.cq.cache
  * Date:2014年4月9日下午12:49:55
- * Copyright (c) 2014, sid Jenkins All Rights Reserved.
+ * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
  * 
  *
 */
@@ -25,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * ClassName:CacheManagerUtil
  * Date:     2014年4月9日 下午12:49:55 
- * @author   sid
+ * @author   nifeng
  * @see 	 
  */
 public class CacheManagerUtil {
@@ -70,7 +70,7 @@ public class CacheManagerUtil {
 	 * 
 	 * getCache:(获取缓存对象). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param name
 	 * @return
 	 */
@@ -81,7 +81,7 @@ public class CacheManagerUtil {
 	 * 
 	 * put:(在指定缓存对象中加入需要缓存的对象). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param cacheName
 	 * @param key
 	 * @param value
@@ -95,7 +95,7 @@ public class CacheManagerUtil {
      * 
      * get:(根据key从指定缓存对象中获取对象). 
      *
-     * @author sid
+     * @author nifeng
      * @param cacheName
      * @param key
      * @return
@@ -117,7 +117,7 @@ public class CacheManagerUtil {
      * 
      * remove:(从指定缓存对象中清除对象). 
      *
-     * @author sid
+     * @author nifeng
      * @param cacheName
      * @param key
      */
@@ -130,7 +130,7 @@ public class CacheManagerUtil {
      * 
      * getKeys:(获取keys列表). 
      *
-     * @author sid
+     * @author nifeng
      * @param cacheName
      * @return
      */
@@ -144,7 +144,7 @@ public class CacheManagerUtil {
 	 * 
 	 * containsKey:(判断消息是否存在). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param cacheName
 	 * @param key
 	 * @return

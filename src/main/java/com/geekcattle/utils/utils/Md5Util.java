@@ -11,7 +11,7 @@ import java.security.NoSuchAlgorithmException;
  * 
  * md5加密
  * 
- * @author sid
+ * @author nifeng
  *
  */
 public class Md5Util {

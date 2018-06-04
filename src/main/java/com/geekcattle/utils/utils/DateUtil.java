@@ -1499,7 +1499,7 @@ public final class DateUtil {
 	 * 
 	 * getDateAddHours:(获取指定时间之后多少小时的时间). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param date
 	 * @param hours
 	 * @return
@@ -1511,7 +1511,7 @@ public final class DateUtil {
 	 * 
 	 * getDateAddMinutes:(获取指定时间之后多少分钟的时间). 
 	 *
-	 * @author sid
+	 * @author nifeng
 	 * @param date
 	 * @param minutes
 	 * @return
