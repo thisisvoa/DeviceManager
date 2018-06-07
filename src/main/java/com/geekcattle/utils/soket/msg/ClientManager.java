@@ -346,4 +346,13 @@ public class ClientManager {
 	public void setHeartbeatDelay(Integer heartbeatDelay) {
 		this.heartbeatDelay = heartbeatDelay;
 	}
+
+
+	public static ConcurrentHashMap<String, Client> getClientMap() {
+		return clientMap;
+	}
+
+	public static void setClientMap(ConcurrentHashMap<String, Client> clientMap) {
+		ClientManager.clientMap = clientMap;
+	}
 }

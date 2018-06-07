@@ -57,4 +57,15 @@ public class Client {
 	public void setUser(TcpUser user) {
 		this.user = user;
 	}
+
+	@Override
+	public String toString() {
+		return "Client{" +
+				"channel=" + channel +
+				", lastUpTime=" + lastUpTime +
+				", login=" + login +
+				", jrm='" + jrm + '\'' +
+				", user=" + user +
+				'}';
+	}
 }

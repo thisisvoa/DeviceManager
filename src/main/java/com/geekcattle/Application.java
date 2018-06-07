@@ -4,18 +4,27 @@
 
 package com.geekcattle;
 
+import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.alibaba.fastjson.support.config.FastJsonConfig;
+import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import com.geekcattle.netty.server.TCPServer;
+
+import java.nio.charset.Charset;
+import java.util.List;
 
 @EnableWebMvc//启动MVC
 @EnableTransactionManagement // 启注解事务管理
@@ -37,8 +46,22 @@ public class Application extends WebMvcConfigurerAdapter  {
         SpringApplication.run(Application.class, args);
     }
 
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+        super.configureMessageConverters(converters);
 
+        FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
 
+        FastJsonConfig fastJsonConfig = new FastJsonConfig();
+        fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.PrettyFormat
+        );
+        //可以设置编码，默认UTF-8
+        fastJsonConfig.setCharset(Charset.forName("UTF-8"));
+        fastConverter.setFastJsonConfig(fastJsonConfig);
+
+        converters.add(fastConverter);
+    }
     @Bean
     public EmbeddedServletContainerCustomizer containerCustomizer() {
 

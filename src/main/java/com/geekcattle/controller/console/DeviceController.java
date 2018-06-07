@@ -5,12 +5,16 @@
 package com.geekcattle.controller.console;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.geekcattle.SpringUtil;
 import com.geekcattle.model.console.ViewBO;
 import com.geekcattle.model.member.Member;
 import com.geekcattle.netty.bean.Client;
+import com.geekcattle.netty.msg.MSG_0x2001;
+import com.geekcattle.netty.msg.MsgFutureManager;
 import com.geekcattle.netty.msg.MsgHeader;
+import com.geekcattle.netty.msg.SessionFutureKey;
+import com.geekcattle.netty.server.TCPServer;
 import com.geekcattle.service.member.MemberService;
 import com.geekcattle.util.ReturnUtil;
 import com.geekcattle.utils.soket.msg.ClientManager;
@@ -27,15 +31,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import com.geekcattle.netty.msg.MSG_0x2001;
-import com.geekcattle.netty.msg.MsgFutureManager;
-import com.geekcattle.netty.msg.SessionFutureKey;
-import com.geekcattle.netty.server.TCPServer;
-import com.geekcattle.SpringUtil;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * author geekcattle
@@ -65,9 +66,9 @@ public class DeviceController {
     }
 
     @RequestMapping(value = "/{mac}/toview", method = {RequestMethod.GET})
-    public String toview(Model model,@PathVariable String mac) {
+    public ModelAndView toview(Model model, @PathVariable String mac) {
         model.addAttribute("mac",mac);
-        return "console/device/toview";
+        return new ModelAndView ("console/device/toview");
     }
 
     @RequestMapping(value = "/send2001", method = {RequestMethod.GET})
@@ -123,66 +124,85 @@ public class DeviceController {
         }
         return map;
     }
+    @RequestMapping(value = "/online",  produces = { "application/json;charset=UTF-8" },method = {RequestMethod.GET})
+    public @ResponseBody
+    Map online() {
+        Map<String, String> map = new HashMap<String, String>();
+        ConcurrentHashMap<String, Client> clientMap = ClientManager.getClientMap();
+        Boolean isEmp = clientMap.isEmpty();
+        if(!isEmp){
+            for(Map.Entry<String, Client> entry: clientMap.entrySet()) {
+                Client value = entry.getValue();
+                System.out.println("Key = " + entry.getKey() + ", Value = " + value);
+                map.put(entry.getKey(), value.toString());
+            }
+        }
 
+        return map;
 
-    @RequestMapping(value = "/{mac}/send2001", method = {RequestMethod.GET})
+    }
+
+    @RequestMapping(value = "/{mac}/send2001",  produces = { "application/json;charset=UTF-8" },method = {RequestMethod.GET})
     public @ResponseBody
     Map send2001(@PathVariable String mac) {
         Map<String, String> map = new HashMap<String, String>();
         ViewBO viewBO = new ViewBO();
         MSG_0x2001 request = new MSG_0x2001();
-//				double[] wgs84ToBD09 = EvilTransform.WGS84ToBD09(12345615, 125645891);
-        request.setData("aa");
-        long seq = request.getHead().getSeq();
-        Client client = ClientManager.getClientByMac(mac);
 
-        if(null != client){
-            client.getChannel().writeAndFlush(request);
-            MsgFutureManager msgFutureManager = (MsgFutureManager) SpringUtil.getBean("msgFutureManager");
-            String json = null;
-            MSG_0x2001 sessionFuture = null;
-            long waitTime = 1000 * 3;
-            long total = waitTime / 10L;
-            long count = 0;
-            while (count <= total) {
-                try {
-                    Thread.sleep(10L);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+        try {
+            request.setData("aa");
+            long seq = request.getHead().getSeq();
+            Client client = ClientManager.getClientByMac(mac);
+
+            if (null != client) {
+                client.getChannel().writeAndFlush(request);
+                MsgFutureManager msgFutureManager = (MsgFutureManager) SpringUtil.getBean("msgFutureManager");
+                String json = null;
+                MSG_0x2001 sessionFuture = null;
+                long waitTime = 1000 * 3;
+                long total = waitTime / 10L;
+                long count = 0;
+                while (count <= total) {
+                    try {
+                        Thread.sleep(10L);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    count++;
+                    SessionFutureKey futureKey = new SessionFutureKey();
+                    futureKey.setSeq(seq);
+                    String s = Converter.fillDataPrefix(mac, 6, "0");
+                    futureKey.setDeviceId("999999");
+                    futureKey.setDeviceType("A");
+                    sessionFuture = (MSG_0x2001) msgFutureManager.get(futureKey);
+                    if (null != sessionFuture) {
+
+                        msgFutureManager.remove(futureKey);
+                        //  json = JSON.toJSONString(sessionFuture);
+                        break;
+                        //处理data
+
+
+                    }
+
+
                 }
-                count++;
-                SessionFutureKey futureKey = new SessionFutureKey();
-                futureKey.setSeq(seq);
-                String s = Converter.fillDataPrefix(mac, 6, "0");
-                futureKey.setDeviceId("999999");
-                futureKey.setDeviceType("A");
-                sessionFuture = (MSG_0x2001) msgFutureManager.get(futureKey);
+
                 if (null != sessionFuture) {
+                    String jsonStr = JSON.toJSONString(sessionFuture);
+                    JSONObject jsonObject = JSONObject.parseObject(jsonStr);
+                    String jsonObject1 = (String) jsonObject.get("data");
 
-                    msgFutureManager.remove(futureKey);
-                  //  json = JSON.toJSONString(sessionFuture);
-                    break;
-                    //处理data
-
-
+                    map.put("data", jsonObject1);
+                    return ReturnUtil.Success("加载成功", map, null);
                 }
-
-
+            } else {
+                return ReturnUtil.Error("客户端未能建立连接，可能原因：1.配置ID不对；2.客户端启动失败！", null, null);
             }
-
-            if (null != sessionFuture) {
-                String jsonStr = JSON.toJSONString(sessionFuture);
-                JSONObject jsonObject = JSONObject.parseObject(jsonStr);
-                String jsonObject1 = (String) jsonObject.get("data");
-
-                map.put("data", jsonObject1);
-                return ReturnUtil.Success("加载成功",map,null);
-            }
+        } catch (Exception ex) {
+            logger.error(ex.getMessage());
+            return ReturnUtil.Error("服务器异常！！请联系管理员！！", null, null);
         }
-        else{
-         return    ReturnUtil.Error("客户端未能建立连接，可能原因：1.配置ID不对；2.客户端启动失败！" ,null,null);
-        }
-
         return map;
     }
 

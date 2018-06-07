@@ -34,4 +34,10 @@ public class TcpUser extends BaseBean {
 		return mapId;
 	}
 
+	@Override
+	public String toString() {
+		return "TcpUser{" +
+				"mac='" + mac + '\'' +
+				'}';
+	}
 }
