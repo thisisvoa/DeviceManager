@@ -145,6 +145,7 @@ public class DeviceController {
     @RequestMapping(value = "/{mac}/send2001",  produces = { "application/json;charset=UTF-8" },method = {RequestMethod.GET})
     public @ResponseBody
     Map send2001(@PathVariable String mac) {
+        MsgFutureManager msgFutureManager = (MsgFutureManager) SpringUtil.getBean("msgFutureManager");
         Map<String, String> map = new HashMap<String, String>();
         ViewBO viewBO = new ViewBO();
         MSG_0x2001 request = new MSG_0x2001();
@@ -156,7 +157,6 @@ public class DeviceController {
 
             if (null != client) {
                 client.getChannel().writeAndFlush(request);
-                MsgFutureManager msgFutureManager = (MsgFutureManager) SpringUtil.getBean("msgFutureManager");
                 String json = null;
                 MSG_0x2001 sessionFuture = null;
                 long waitTime = 1000 * 3;
@@ -202,6 +202,9 @@ public class DeviceController {
         } catch (Exception ex) {
             logger.error(ex.getMessage());
             return ReturnUtil.Error("服务器异常！！请联系管理员！！", null, null);
+        }
+        finally {
+            msgFutureManager.clearCurrentHashMap();
         }
         return map;
     }

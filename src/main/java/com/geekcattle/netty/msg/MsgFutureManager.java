@@ -12,9 +12,9 @@ import java.util.concurrent.ConcurrentHashMap;
 @Qualifier("msgFutureManager")
 public class MsgFutureManager {
 
-    private static final int DEFAULTSIZE = 4;
+    private static final int DEFAULTSIZE = 1;
     private int mapSize;
-    private final ConcurrentHashMap<SessionFutureKey, AbsMsg>[] maps;
+    private final ConcurrentHashMap<SessionFutureKey, AbsMsg> maps=new ConcurrentHashMap<SessionFutureKey, AbsMsg>(256);
 
     public MsgFutureManager()
     {
@@ -24,11 +24,7 @@ public class MsgFutureManager {
     public MsgFutureManager(int mapSize)
     {
         this.mapSize = mapSize;
-        maps = new ConcurrentHashMap[mapSize];
-        for (int i = 0; i < mapSize; i++)
-        {
-            maps[i] = new ConcurrentHashMap<SessionFutureKey, AbsMsg>(256);
-        }
+
     }
 
     public AbsMsg put(SessionFutureKey key, AbsMsg future)
@@ -49,7 +45,7 @@ public class MsgFutureManager {
         return futureMap.remove(key);
     }
 
-    private long getMapIndex(SessionFutureKey key)
+   /* private long getMapIndex(SessionFutureKey key)
     {
         long pktID = key.getSeq();
         if (pktID < 0)
@@ -58,17 +54,21 @@ public class MsgFutureManager {
         }
         long idx = pktID % mapSize;
         return idx;
-    }
+    }*/
 
     private ConcurrentHashMap<SessionFutureKey, AbsMsg> getMap(SessionFutureKey key)
     {
         if(null != key){
 
-            long idx = getMapIndex(key);
-            return maps[(int)idx];
+         //   long idx = getMapIndex(key);
+            return maps;  //默认一个currentHashMap，这个是hi导致内存不能释放的原因
         }
         else{
             return  null;
         }
+    }
+
+    public   void clearCurrentHashMap(){
+        maps.clear();
     }
 }
