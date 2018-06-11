@@ -152,7 +152,9 @@ public class DeviceController {
 
         try {
             request.setData("aa");
-            long seq = request.getHead().getSeq();
+            MsgHeader head = request.getHead();
+            long seq = head.getSeq();
+            head.setMac(mac);
             Client client = ClientManager.getClientByMac(mac);
 
             if (null != client) {
@@ -172,7 +174,7 @@ public class DeviceController {
                     SessionFutureKey futureKey = new SessionFutureKey();
                     futureKey.setSeq(seq);
                     String s = Converter.fillDataPrefix(mac, 6, "0");
-                    futureKey.setDeviceId("999999");
+                    futureKey.setDeviceId(mac);
                     futureKey.setDeviceType("A");
                     sessionFuture = (MSG_0x2001) msgFutureManager.get(futureKey);
                     if (null != sessionFuture) {
@@ -204,7 +206,7 @@ public class DeviceController {
             return ReturnUtil.Error("服务器异常！！请联系管理员！！", null, null);
         }
         finally {
-            msgFutureManager.clearCurrentHashMap();
+           
         }
         return map;
     }

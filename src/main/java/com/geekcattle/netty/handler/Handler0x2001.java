@@ -34,7 +34,7 @@ public class Handler0x2001 implements IHandler {
 				MSG_0x2001 msg = (MSG_0x2001) m;
 				MsgFutureManager msgFutureManager = (MsgFutureManager) SpringUtil.getBean("msgFutureManager");
 				SessionFutureKey sessionFutureKey=new SessionFutureKey();
-				sessionFutureKey.setDeviceId("999999");
+				sessionFutureKey.setDeviceId(msg.getHead().getMac());
 				sessionFutureKey.setDeviceType("A");
 				sessionFutureKey.setSeq(m.getHead().getSeq());
 				msgFutureManager.put(sessionFutureKey,m);
