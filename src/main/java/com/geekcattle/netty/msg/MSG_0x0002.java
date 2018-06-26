@@ -12,7 +12,7 @@ import java.util.Arrays;
  * Reason: 心跳消息 
  * date: 2015年5月11日 下午4:01:48 
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class MSG_0x0002 extends AbsMsg {
 

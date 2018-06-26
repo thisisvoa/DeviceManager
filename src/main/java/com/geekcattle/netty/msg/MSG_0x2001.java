@@ -14,7 +14,7 @@ import java.nio.ByteBuffer;
  * Reason: 位置消息 
  * date: 2015年5月11日 下午4:25:01 
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class MSG_0x2001 extends AbsMsg {
 	

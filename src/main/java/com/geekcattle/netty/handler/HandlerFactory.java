@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * handler工厂
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class HandlerFactory {
 

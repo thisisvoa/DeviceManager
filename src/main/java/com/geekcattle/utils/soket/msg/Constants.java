@@ -3,7 +3,7 @@
  * File Name:Constants.java
  * Package Name:com.geekcattle.netty
  * Date:2015年5月11日上午10:01:11
- * Copyright (c) 2015, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2015, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -17,7 +17,7 @@ import com.geekcattle.utils.utils.PropertiesUtil;
  * Function: TODO ADD FUNCTION. 
  * Reason:	 TODO ADD REASON. 
  * Date:     2015年5月11日 上午10:01:11 
- * @author   nifeng
+ * @author   geekcattle
  * @see 	 
  */
 public class Constants {

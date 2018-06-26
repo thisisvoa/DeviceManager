@@ -3,7 +3,7 @@ package com.geekcattle.netty.msg;
 /**
  * 
  * 消息头接口
- * @author nifeng
+ * @author geekcattle
  *
  */
 public interface IMsgHead {

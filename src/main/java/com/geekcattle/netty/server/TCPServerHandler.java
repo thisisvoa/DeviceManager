@@ -3,7 +3,7 @@
  * File Name:TCPServerHandler.java
  * Package Name:com.hdsx.taxi.driver.cq.tcp
  * Date:2014年4月10日上午10:49:15
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
  */
@@ -32,7 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * ClassName:TCPServerHandler Function: TODO ADD FUNCTION. Reason: TODO ADD
  * REASON. Date: 2014年4月10日 上午10:49:15
  * 
- * @author nifeng
+ * @author geekcattle
  * @see
  */
 @ChannelHandler.Sharable

@@ -16,7 +16,7 @@ import java.nio.ByteBuffer;
 /**
  * 
  * 处理消息线程
- * @author nifeng
+ * @author geekcattle
  *
  */
 public class ParseMsgThread extends Thread {

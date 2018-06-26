@@ -16,7 +16,7 @@ import com.geekcattle.utils.utils.LogUtil;
  * 登录消息 
  * date: 2015年5月11日 下午4:01:24 
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class MSG_0x0001 extends AbsMsg {
 	

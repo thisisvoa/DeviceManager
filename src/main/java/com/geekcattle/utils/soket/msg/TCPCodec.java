@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * 
  * 编解码
- * @author nifeng
+ * @author geekcattle
  *
  */
 public class TCPCodec extends ByteToMessageCodec<AbsMsg> {

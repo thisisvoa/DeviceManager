@@ -13,7 +13,7 @@ import com.geekcattle.SpringUtil;
 /**
  * 
  * 链路登陆handler
- * @author nifeng
+ * @author geekcattle
  *
  */
 public class Handler0x2001 implements IHandler {

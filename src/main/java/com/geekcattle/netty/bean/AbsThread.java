@@ -3,7 +3,7 @@ package com.geekcattle.netty.bean;
 /**
  * 
  * 线程抽象类
- * @author nifeng
+ * @author geekcattle
  *
  */
 public abstract class AbsThread {

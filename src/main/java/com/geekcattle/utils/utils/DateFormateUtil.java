@@ -44,7 +44,7 @@ public class DateFormateUtil {
 	 * 验证指定的一起格式
 	 * isValidDate:
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param str
 	 * @param formate 例子：yyyy/MM/dd
 	 * @return
@@ -69,7 +69,7 @@ public class DateFormateUtil {
 	 * 
 	 * getDateAddMinutes:(获取指定时间之后多少分钟的时间). 
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param date
 	 * @param minutes
 	 * @return
@@ -86,7 +86,7 @@ public class DateFormateUtil {
 	 * 
 	 * getDateAddHours:(获取指定时间之后多少小时的时间). 
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param date
 	 * @param hours
 	 * @return
@@ -98,7 +98,7 @@ public class DateFormateUtil {
 	 * 
 	 * getDateAddDays:(获取指定时间之后多少小时的时间). 
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param date
 	 * @param days
 	 * @return

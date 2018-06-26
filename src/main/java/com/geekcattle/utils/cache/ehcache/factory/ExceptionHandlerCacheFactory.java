@@ -3,7 +3,7 @@
  * File Name:ExceptionHandlerCacheFactory.java
  * Package Name:com.hdsx.taxi.driver.cq.cache
  * Date:2014年5月23日上午8:25:20
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -20,7 +20,7 @@ import java.util.Properties;
  * Function: TODO ADD FUNCTION. 
  * Reason:	 TODO ADD REASON. 
  * Date:     2014年5月23日 上午8:25:20 
- * @author   nifeng
+ * @author   geekcattle
  * @see 	 
  */
 public class ExceptionHandlerCacheFactory extends CacheExceptionHandlerFactory {

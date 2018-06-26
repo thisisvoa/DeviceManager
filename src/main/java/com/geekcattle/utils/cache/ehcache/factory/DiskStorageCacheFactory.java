@@ -3,7 +3,7 @@
  * File Name:DiskStorageCacheFactory.java
  * Package Name:com.hdsx.taxi.driver.cq.cache
  * Date:2014年5月23日上午8:13:52
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -19,7 +19,7 @@ import net.sf.ehcache.store.disk.DiskStorageFactory;
  * Function: TODO ADD FUNCTION. 
  * Reason:	 TODO ADD REASON. 
  * Date:     2014年5月23日 上午8:13:52 
- * @author   nifeng
+ * @author   geekcattle
  * @see 	 
  */
 public class DiskStorageCacheFactory extends DiskStorageFactory {

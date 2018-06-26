@@ -1,45 +1,45 @@
 Manifest-Version: 1.0
-Class-Path: spring-boot-1.5.3.RELEASE.jar shiro-web-1.2.4.jar ehcache-
- core-2.5.0.jar accessors-smart-1.1.jar hibernate-validator-5.3.5.Fina
- l.jar objenesis-2.1.jar tomcat-embed-el-8.5.14.jar aspectjweaver-1.8.
- 10.jar commons-collections-3.2.2.jar spring-boot-starter-thymeleaf-1.
- 5.3.RELEASE.jar mockito-core-1.10.19.jar spring-boot-starter-web-1.5.
- 3.RELEASE.jar spring-boot-starter-logging-1.5.3.RELEASE.jar jackson-m
- odule-parameter-names-2.8.5.jar jedis-2.9.0.jar jackson-datatype-joda
- -2.8.5.jar commons-logging-1.1.1.jar commons-lang-2.5.jar ezmorph-1.0
- .6.jar fastjson-1.2.21.jar logback-core-1.1.11.jar spring-oxm-4.3.8.R
- ELEASE.jar logback-classic-1.1.11.jar groovy-2.4.10.jar spring-boot-t
- est-autoconfigure-1.5.3.RELEASE.jar tomcat-juli-8.5.14.jar spring-boo
- t-starter-1.5.3.RELEASE.jar mybatis-generator-core-1.3.2.jar persiste
- nce-api-1.0.jar tomcat-jdbc-8.5.14.jar shiro-spring-1.2.4.jar json-pa
- th-2.2.0.jar javassist-3.21.0-GA.jar jsqlparser-0.9.4.jar tomcat-embe
- d-core-8.5.14.jar spring-beans-4.3.8.RELEASE.jar jul-to-slf4j-1.7.25.
- jar commons-pool2-2.4.2.jar spring-boot-starter-test-1.5.3.RELEASE.ja
- r commons-lang3-3.4.jar jconsole.jar classmate-1.3.3.jar validation-a
- pi-1.1.0.Final.jar spring-expression-4.3.8.RELEASE.jar json-lib-2.4-j
- dk15.jar hamcrest-library-1.3.jar json-smart-2.2.1.jar commons-beanut
- ils-1.8.3.jar jsonassert-1.4.0.jar thymeleaf-layout-dialect-1.4.0.jar
-  spring-aop-4.3.8.RELEASE.jar jackson-core-2.8.5.jar spring-boot-devt
- ools-1.5.3.RELEASE.jar druid-1.0.11.jar jjwt-0.6.0.jar spring-tx-4.3.
- 8.RELEASE.jar spring-context-support-4.3.8.RELEASE.jar tools.jar snak
- eyaml-1.17.jar spring-boot-starter-data-redis-1.5.3.RELEASE.jar sprin
- g-context-4.3.8.RELEASE.jar ognl-3.0.8.jar spring-data-keyvalue-1.2.3
- .RELEASE.jar ehcache-2.8.1.jar jackson-annotations-2.8.5.jar spring-w
- eb-4.3.8.RELEASE.jar spring-boot-test-1.5.3.RELEASE.jar pagehelper-4.
- 1.1.jar unbescape-1.1.0.RELEASE.jar thymeleaf-2.1.5.RELEASE.jar sprin
- g-boot-starter-aop-1.5.3.RELEASE.jar joda-time-2.9.9.jar jboss-loggin
- g-3.3.1.Final.jar slf4j-api-1.7.25.jar spring-data-commons-1.13.3.REL
- EASE.jar spring-jdbc-4.3.8.RELEASE.jar spring-data-redis-1.8.3.RELEAS
- E.jar spring-core-4.3.8.RELEASE.jar spring-boot-autoconfigure-1.5.3.R
- ELEASE.jar mapper-3.3.9.jar android-json-0.0.20131108.vaadin1.jar tom
- cat-embed-websocket-8.5.14.jar guava-18.0.jar mybatis-spring-1.2.4.ja
- r spring-webmvc-4.3.8.RELEASE.jar mysql-connector-java-5.1.29.jar thy
- meleaf-spring4-2.1.5.RELEASE.jar spring-boot-starter-tomcat-1.5.3.REL
- EASE.jar commons-codec-1.10.jar jackson-databind-2.8.5.jar asm-5.0.3.
- jar hamcrest-core-1.3.jar netty-all-4.1.24.Final.jar mybatis-3.3.1.ja
- r jcl-over-slf4j-1.7.25.jar spring-boot-starter-jdbc-1.5.3.RELEASE.ja
- r shiro-ehcache-1.2.4.jar spring-test-4.3.8.RELEASE.jar shiro-core-1.
- 2.4.jar gson-2.2.4.jar log4j-over-slf4j-1.7.25.jar assertj-core-2.6.0
+Class-Path: snakeyaml-1.17.jar commons-lang-2.5.jar spring-web-4.3.8.R
+ ELEASE.jar json-smart-2.2.1.jar spring-boot-starter-web-1.5.3.RELEASE
+ .jar jackson-module-parameter-names-2.8.5.jar hamcrest-core-1.3.jar e
+ hcache-core-2.5.0.jar spring-data-keyvalue-1.2.3.RELEASE.jar mapper-3
+ .3.9.jar spring-boot-test-autoconfigure-1.5.3.RELEASE.jar spring-boot
+ -devtools-1.5.3.RELEASE.jar pagehelper-4.1.1.jar commons-logging-1.1.
+ 1.jar jackson-databind-2.8.5.jar fastjson-1.2.21.jar tools.jar jsonas
+ sert-1.4.0.jar log4j-over-slf4j-1.7.25.jar unbescape-1.1.0.RELEASE.ja
+ r spring-boot-starter-jdbc-1.5.3.RELEASE.jar spring-aop-4.3.8.RELEASE
+ .jar joda-time-2.9.9.jar spring-jdbc-4.3.8.RELEASE.jar jackson-dataty
+ pe-joda-2.8.5.jar spring-data-commons-1.13.3.RELEASE.jar hibernate-va
+ lidator-5.3.5.Final.jar json-lib-2.4-jdk15.jar spring-boot-starter-to
+ mcat-1.5.3.RELEASE.jar spring-test-4.3.8.RELEASE.jar tomcat-juli-8.5.
+ 14.jar mockito-core-1.10.19.jar thymeleaf-spring4-2.1.5.RELEASE.jar g
+ son-2.2.4.jar tomcat-embed-el-8.5.14.jar commons-pool2-2.4.2.jar clas
+ smate-1.3.3.jar groovy-2.4.10.jar objenesis-2.1.jar assertj-core-2.6.
+ 0.jar spring-boot-test-1.5.3.RELEASE.jar spring-boot-starter-logging-
+ 1.5.3.RELEASE.jar commons-lang3-3.4.jar spring-context-support-4.3.8.
+ RELEASE.jar spring-boot-starter-1.5.3.RELEASE.jar ognl-3.0.8.jar slf4
+ j-api-1.7.25.jar spring-boot-starter-aop-1.5.3.RELEASE.jar hamcrest-l
+ ibrary-1.3.jar mybatis-generator-core-1.3.2.jar spring-webmvc-4.3.8.R
+ ELEASE.jar commons-codec-1.10.jar asm-5.0.3.jar shiro-core-1.2.4.jar 
+ json-path-2.2.0.jar spring-expression-4.3.8.RELEASE.jar spring-tx-4.3
+ .8.RELEASE.jar shiro-web-1.2.4.jar shiro-spring-1.2.4.jar tomcat-jdbc
+ -8.5.14.jar logback-classic-1.1.11.jar accessors-smart-1.1.jar mybati
+ s-spring-1.2.4.jar spring-boot-1.5.3.RELEASE.jar validation-api-1.1.0
+ .Final.jar thymeleaf-2.1.5.RELEASE.jar persistence-api-1.0.jar spring
+ -core-4.3.8.RELEASE.jar jackson-core-2.8.5.jar guava-18.0.jar spring-
+ context-4.3.8.RELEASE.jar jboss-logging-3.3.1.Final.jar mybatis-3.3.1
+ .jar spring-boot-starter-test-1.5.3.RELEASE.jar jconsole.jar javassis
+ t-3.21.0-GA.jar commons-collections-3.2.2.jar jul-to-slf4j-1.7.25.jar
+  tomcat-embed-websocket-8.5.14.jar jackson-annotations-2.8.5.jar andr
+ oid-json-0.0.20131108.vaadin1.jar jcl-over-slf4j-1.7.25.jar tomcat-em
+ bed-core-8.5.14.jar spring-beans-4.3.8.RELEASE.jar spring-data-redis-
+ 1.8.3.RELEASE.jar jsqlparser-0.9.4.jar mysql-connector-java-5.1.29.ja
+ r spring-boot-starter-data-redis-1.5.3.RELEASE.jar ehcache-2.8.1.jar 
+ logback-core-1.1.11.jar commons-beanutils-1.8.3.jar aspectjweaver-1.8
+ .10.jar shiro-ehcache-1.2.4.jar druid-1.0.11.jar spring-boot-starter-
+ thymeleaf-1.5.3.RELEASE.jar spring-boot-autoconfigure-1.5.3.RELEASE.j
+ ar spring-oxm-4.3.8.RELEASE.jar jedis-2.9.0.jar netty-all-4.1.24.Fina
+ l.jar thymeleaf-layout-dialect-1.4.0.jar ezmorph-1.0.6.jar jjwt-0.6.0
  .jar
 Main-Class: com.geekcattle.Application
 

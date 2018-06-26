@@ -37,7 +37,7 @@ import java.util.concurrent.TimeUnit;
  * ClassName: TCPServer 
  * date: 2015年1月29日 下午4:11:19 
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class TCPServer extends AbstractServer  {
 
@@ -215,7 +215,7 @@ public class TCPServer extends AbstractServer  {
 	 * 
 	 * closeConnect
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 */
 	public void closeConnect() {
 		try {
@@ -229,7 +229,7 @@ public class TCPServer extends AbstractServer  {
 	 * 
 	 * send:(发送消息).
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param m
 	 */
 	public void send(AbsMsg m) {

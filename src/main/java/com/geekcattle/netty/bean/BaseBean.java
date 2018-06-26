@@ -3,7 +3,7 @@
  * File Name:BaseBean.java
  * Package Name:com.hdsx.taxi.upa.bean
  * Date:2014年10月23日上午8:59:20
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -15,7 +15,7 @@ import java.util.HashMap;
 /**
  * ClassName:BaseBean
  * Date:     2014年10月23日 上午8:59:20 
- * @author   nifeng
+ * @author   geekcattle
  * @see 	 
  */
 public abstract class BaseBean {
@@ -24,7 +24,7 @@ public abstract class BaseBean {
 	 * 
 	 * getMapId:(返回组成map的字符串). 
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @return
 	 */
 	public abstract HashMap<String, Object> getMapId();

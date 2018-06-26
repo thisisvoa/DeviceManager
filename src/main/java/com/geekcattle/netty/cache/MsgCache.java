@@ -18,7 +18,7 @@ import org.springframework.cache.Cache;
 /**
  * 消息缓存
  * 
- * @author nifeng
+ * @author geekcattle
  *
  */
 public class MsgCache {
@@ -75,7 +75,7 @@ public class MsgCache {
 	 * 
 	 * remove:移除消息
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param key
 	 */
 	public void remove(String key) {
@@ -111,7 +111,7 @@ public class MsgCache {
 	 * 
 	 * cleanAndgetResendMsg:(清理缓存中的消息，同时将需要重新发送的消息返回).
 	 * 
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param minInterval
 	 *            最小间隔时间，以秒为单位
 	 * @param maxCount

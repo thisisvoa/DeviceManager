@@ -3,7 +3,7 @@
  * File Name:MsgObj.java
  * Package Name:com.hdsx.taxi.driver.cq.tcp.cache
  * Date:2014年4月16日上午11:16:54
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -23,7 +23,7 @@ import com.geekcattle.netty.msg.AbsMsg;
  * Reason: TODO ADD REASON(可选). 
  * date: 2014年3月30日 上午10:19:32 
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class MsgObj implements Serializable{
 	private static final long serialVersionUID = 1L;

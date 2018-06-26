@@ -19,7 +19,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 客户端管理工具
  * 
- * @author nifeng
+ * @author geekcattle
  *
  */
 public class ClientManager {

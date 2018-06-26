@@ -3,7 +3,7 @@
  * File Name:MainCacheEventListenerFactory.java
  * Package Name:com.hdsx.taxi.driver.cq.cache
  * date: 2014年4月9日 上午11:27:06 
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -23,7 +23,7 @@ import java.util.Properties;
  * ClassName: MainCacheEventListenerFactory 
  * date: 2014年4月9日 上午11:27:06 
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class MainCacheEventListenerFactory extends CacheEventListenerFactory {
 

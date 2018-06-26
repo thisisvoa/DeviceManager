@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * 
  * 链路登陆handler
- * @author nifeng
+ * @author geekcattle
  *
  */
 public class Handler0x0002 implements IHandler {

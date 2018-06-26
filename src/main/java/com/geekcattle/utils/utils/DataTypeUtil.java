@@ -3,7 +3,7 @@
  * File Name:DataUtils.java
  * Package Name:com.hdsx.taxi.mongo.com.geekcattle.utils
  * Date:2014年10月31日下午3:41:55
- * Copyright (c) 2014, nifeng Jenkins All Rights Reserved.
+ * Copyright (c) 2014, geekcattle Jenkins All Rights Reserved.
  * 
  *
 */
@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 /**
  * ClassName:DataUtils
  * Date:     2014年10月31日 下午3:41:55 
- * @author   nifeng
+ * @author   geekcattle
  * @see 	 
  */
 @SuppressWarnings("rawtypes")
@@ -1705,7 +1705,7 @@ public class DataTypeUtil {
 	 * 验证指定的一起格式
 	 * isValidDate:
 	 *
-	 * @author nifeng
+	 * @author geekcattle
 	 * @param str
 	 * @param formate 例子：yyyy/MM/dd
 	 * @return

@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * 线程池（处理消息）管理
  *
- * @author nifeng
+ * @author geekcattle
  */
 public class ParseMsgThreadManager extends AbsThread {
 
