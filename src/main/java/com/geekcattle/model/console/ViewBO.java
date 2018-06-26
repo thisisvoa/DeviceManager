@@ -5,7 +5,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 /**
  *
  * 页面展示
- * Created by zhangjin
+ * Created by geekcattle
  */
 public class ViewBO {
 

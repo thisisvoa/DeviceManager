@@ -18,7 +18,7 @@ import java.util.Map;
  * @Description:   This class holds configuration information thats useful to start a netty
  * server. It has information on port numbers, {@link io.netty.channel.EventLoopGroup}s and
  * {@link ChannelOption}s.
- * @author zhangjin
+ * @author geekcattle
  * @create 2017-05-08
  **/
 public class NettyConfig {

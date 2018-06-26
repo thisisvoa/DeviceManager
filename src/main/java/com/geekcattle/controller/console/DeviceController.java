@@ -206,7 +206,7 @@ public class DeviceController {
             return ReturnUtil.Error("服务器异常！！请联系管理员！！", null, null);
         }
         finally {
-           
+
         }
         return map;
     }

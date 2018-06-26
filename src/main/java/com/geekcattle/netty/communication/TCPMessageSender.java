@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  *  Copyright 2017 the original author or authors hangzhou Reformer
  * @Description: ${todo}(这里用一句话描述这个类的作用)
- * @author zhangjin
+ * @author geekcattle
  * @create 2017-05-08
 **/
 public class TCPMessageSender implements ISender<AbsMsg> {
